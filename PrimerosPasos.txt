@@ -17,3 +17,5 @@ exigencias reglas acuerdos entre nosotros:
 -Los viernes a la noche nos comprometemos a avanzar con el proyecto.
 -Vamos a dividirnos las tareas de forma equitativa.
 -Nos comprometemos a conversar de código a la hora del almuerzo.
+
+TRELLO del equipo: https://trello.com/b/qxbmxvYf/tpi-prog-4
