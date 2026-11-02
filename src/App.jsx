@@ -28,8 +28,8 @@ function App() {
 
 function HomePage() {
   const links = [
-    { to: '/calendario', label: 'Eventos' },
-    { to: '/calendario', label: 'Categorías' },
+    { to: '/calendario', label: 'Calendario' },
+    { to: '/calendario', label: 'Crear evento' },
     { to: '/contacto', label: 'Contacto' },
   ]
 
@@ -44,7 +44,7 @@ function HomePage() {
         <Hero
           backgroundImage={heroImage}
           eyebrow="Todo lo que pasa, en un solo lugar"
-          title="Descubrí los próximos eventos de tu ciudad"
+          title="Descubrí los próximos eventos de Goya Corrientes"
           description="Encontrá actividades, cultura y encuentros para compartir con tu comunidad."
           actions={<>
             <Link to="/calendario"><Button className="border-0 bg-white text-primary hover:bg-white/90">Explorar eventos</Button></Link>
