@@ -3,6 +3,7 @@ import EventCard from '../components/EventCard'
 import PageLayout from '../components/PageLayout'
 import SectionTitle from '../components/SectionTitle'
 import { events } from '../data/events'
+import { Link } from 'react-router-dom'
 
 function CalendarPage() {
   return (
@@ -28,11 +29,11 @@ function CalendarPage() {
           <Button variant="ghost" aria-label="Mes siguiente">→</Button>
         </div>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {[...events, ...events].map((event, index) => (
+          {events.map((event) => (
             <EventCard
-              key={`${event.title}-${index}`}
-              event={{ ...event, day: String(Number(event.day) + index), month: index % 2 ? 'Febrero' : event.month }}
-              action={<Button variant="ghost" className="text-primary">Ver detalles</Button>}
+              key={event.slug}
+              event={event}
+              action={<Link to={`/eventos/${event.slug}`}><Button variant="ghost" className="text-primary">Ver más detalles</Button></Link>}
             />
           ))}
         </div>

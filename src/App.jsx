@@ -8,6 +8,7 @@ import Navbar from './components/Navbar'
 import ContactPage from './pages/ContactPage'
 import CreateEventPage from './pages/CreateEventPage'
 import CalendarPage from './pages/CalendarPage'
+import EventDetailsPage from './pages/EventDetailsPage'
 import SearchBar from './components/SearchBar'
 import SectionTitle from './components/SectionTitle'
 import { categories, events } from './data/events'
@@ -19,6 +20,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/calendario" element={<CalendarPage />} />
+        <Route path="/eventos/:slug" element={<EventDetailsPage />} />
         <Route path="/crear" element={<CreateEventPage />} />
         <Route path="/contacto" element={<ContactPage />} />
       </Routes>
@@ -67,7 +69,7 @@ function HomePage() {
         <section id="eventos" className="mx-auto max-w-6xl px-6 py-16">
           <SectionTitle eyebrow="Agenda local" title="Próximos eventos" action={<Link to="/calendario"><Button variant="outline">Ver calendario</Button></Link>} />
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {events.map((event) => <EventCard key={event.title} event={event} action={<Link to="/calendario"><Button variant="ghost" className="text-primary">Ver detalles</Button></Link>} />)}
+            {events.map((event) => <EventCard key={event.slug} event={event} action={<Link to={`/eventos/${event.slug}`}><Button variant="ghost" className="text-primary">Ver más detalles</Button></Link>} />)}
           </div>
         </section>
         <section id="categorias" className="bg-base-200 px-6 py-16">

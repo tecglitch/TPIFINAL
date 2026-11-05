@@ -10,6 +10,11 @@ function EventCard({ event, action, className = '' }) {
       />
 
       <div className="relative z-0">
+        <img
+          className="mb-4 h-36 w-full rounded-sm border border-amber-950/10 object-cover"
+          src={event.image}
+          alt={`Imagen de ${event.title}`}
+        />
         <div className="flex items-start justify-between gap-3">
           <span className="inline-flex rounded-full border border-amber-950/15 bg-amber-950/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-amber-950">
             {event.category}
@@ -29,8 +34,10 @@ function EventCard({ event, action, className = '' }) {
 
         <div className="mt-4 flex items-center gap-2 border-t border-amber-900/15 pt-3 text-sm text-stone-700">
           <span aria-hidden="true">⌖</span>
-          <span>{event.location}</span>
+          <span>{event.location}{event.city ? ` · ${event.city}` : ''}</span>
         </div>
+
+        {event.time && <p className="mt-2 text-sm text-stone-700">Horario: {event.time}</p>}
 
         {action && <div className="mt-3 flex justify-end">{action}</div>}
       </div>
