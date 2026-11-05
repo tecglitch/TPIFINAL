@@ -1,4 +1,7 @@
-function EventCard({ event, action, className = '' }) {
+import { Link } from 'react-router-dom'
+import Button from './Button'
+
+function EventCard({ event, className = '' }) {
   return (
     <article
       className={`relative isolate rotate-[-1deg] rounded-sm border border-amber-900/10 bg-gradient-to-br from-[#fff3a3] via-[#ffeb70] to-[#f7dc58] p-6 pt-9 text-stone-800 shadow-[2px_5px_10px_rgba(60,45,10,0.2)] transition duration-200 hover:-translate-y-1 hover:rotate-0 hover:shadow-[4px_10px_18px_rgba(60,45,10,0.25)] ${className}`}
@@ -39,7 +42,11 @@ function EventCard({ event, action, className = '' }) {
 
         {event.time && <p className="mt-2 text-sm text-stone-700">Horario: {event.time}</p>}
 
-        {action && <div className="mt-3 flex justify-end">{action}</div>}
+        <div className="mt-3 flex justify-end">
+          <Link to={`/eventos/${event.slug}`}>
+            <Button variant="ghost" className="text-primary">Ver más detalles</Button>
+          </Link>
+        </div>
       </div>
     </article>
   )

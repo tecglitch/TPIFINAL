@@ -3,7 +3,6 @@ import EventCard from '../components/EventCard'
 import PageLayout from '../components/PageLayout'
 import SectionTitle from '../components/SectionTitle'
 import { events } from '../data/events'
-import { Link } from 'react-router-dom'
 
 function CalendarPage() {
   return (
@@ -33,7 +32,6 @@ function CalendarPage() {
             <EventCard
               key={event.slug}
               event={event}
-              action={<Link to={`/eventos/${event.slug}`}><Button variant="ghost" className="text-primary">Ver más detalles</Button></Link>}
             />
           ))}
         </div>

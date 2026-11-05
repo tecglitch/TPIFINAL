@@ -69,7 +69,7 @@ function HomePage() {
         <section id="eventos" className="mx-auto max-w-6xl px-6 py-16">
           <SectionTitle eyebrow="Agenda local" title="Próximos eventos" action={<Link to="/calendario"><Button variant="outline">Ver calendario</Button></Link>} />
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {events.map((event) => <EventCard key={event.slug} event={event} action={<Link to={`/eventos/${event.slug}`}><Button variant="ghost" className="text-primary">Ver más detalles</Button></Link>} />)}
+            {events.map((event) => <EventCard key={event.slug} event={event} />)}
           </div>
         </section>
         <section id="categorias" className="bg-base-200 px-6 py-16">
