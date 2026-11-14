@@ -2,7 +2,7 @@
 :root {
   --color-primary: #5f3711;
   --color-secondary: #d4c098;
-  --color-background: #f7f6e4;
+  --color-background: #f2ead8;
   --color-text: #5f3711;
   --color-accent: #e2d5c1;
 }
@@ -19,7 +19,7 @@
   --color-accent: #e2d5c1;
   --color-accent-content: #5f3711;
   --color-base-100: #f7f6e4;
-  --color-base-200: #e2d5c1;
+  --color-base-200: #d9c5a8;
   --color-base-300: #d4c098;
   --color-base-content: #5f3711;
   --color-neutral: #5f3711;

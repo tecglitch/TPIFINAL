@@ -1,51 +1,33 @@
 import { Link } from 'react-router-dom'
 import Button from './Button'
+import FavoriteButton from './FavoriteButton'
+import StatusBadge from './StatusBadge'
+
+const dateLabel = (value) => new Date(value).toLocaleDateString('es-AR', { day: 'numeric', month: 'long', year: 'numeric' })
 
 function EventCard({ event, className = '' }) {
+  const start = new Date(event.startAt)
+  const end = new Date(event.endAt || event.startAt)
+  const multiDay = start.toDateString() !== end.toDateString()
   return (
-    <article
-      className={`relative isolate rotate-[-1deg] rounded-sm border border-amber-900/10 bg-gradient-to-br from-[#fff3a3] via-[#ffeb70] to-[#f7dc58] p-6 pt-9 text-stone-800 shadow-[2px_5px_10px_rgba(60,45,10,0.2)] transition duration-200 hover:-translate-y-1 hover:rotate-0 hover:shadow-[4px_10px_18px_rgba(60,45,10,0.25)] ${className}`}
-    >
-      {/* Una cinta centrada en el borde superior */}
-      <span
-        aria-hidden="true"
-        className="pointer-events-none absolute -top-2 left-1/2 z-10 h-7 w-24 -translate-x-1/2 rotate-[-3deg] border border-[#54351f]/40 bg-gradient-to-br from-[#b98a5c] via-[#98704a] to-[#795536] shadow-[1px_2px_4px_rgba(45,25,10,0.35)]"
-      />
-
-      <div className="relative z-0">
-        <img
-          className="mb-4 h-36 w-full rounded-sm border border-amber-950/10 object-cover"
-          src={event.image}
-          alt={`Imagen de ${event.title}`}
-        />
-        <div className="flex items-start justify-between gap-3">
-          <span className="inline-flex rounded-full border border-amber-950/15 bg-amber-950/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-amber-950">
-            {event.category}
-          </span>
-          <div className="text-right leading-none text-amber-950">
-            <p className="text-3xl font-black">{event.day}</p>
-            <p className="mt-1 text-xs font-bold uppercase tracking-wider">{event.month}</p>
-          </div>
+    <article className={`card overflow-hidden border border-amber-200 bg-gradient-to-br from-amber-50 via-yellow-50 to-yellow-100 shadow-sm transition hover:-translate-y-1 hover:shadow-lg ${className}`}>
+      <img className="h-40 w-full object-cover" src={event.image} alt={`Imagen de ${event.title}`} />
+      <div className="card-body gap-3 p-5">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <span className="badge badge-primary badge-outline">{event.category}</span>
+          <StatusBadge status={event.status} />
         </div>
-
-        <h3 className="mt-5 text-xl font-extrabold leading-tight text-stone-900">
-          {event.title}
-        </h3>
-        <p className="mt-3 text-sm leading-relaxed text-stone-700">
-          {event.description}
-        </p>
-
-        <div className="mt-4 flex items-center gap-2 border-t border-amber-900/15 pt-3 text-sm text-stone-700">
-          <span aria-hidden="true">⌖</span>
-          <span>{event.location}{event.city ? ` · ${event.city}` : ''}</span>
-        </div>
-
-        {event.time && <p className="mt-2 text-sm text-stone-700">Horario: {event.time}</p>}
-
-        <div className="mt-3 flex justify-end">
-          <Link to={`/eventos/${event.slug}`}>
-            <Button variant="ghost" className="text-primary">Ver más detalles</Button>
-          </Link>
+        <h3 className="card-title font-note-hand text-xl">{event.title}</h3>
+        <p className="text-sm text-base-content/75">{event.description}</p>
+        <dl className="font-note-hand grid gap-1 border-t border-base-300 pt-3 text-sm text-base-content/80">
+          <div><dt className="inline font-semibold">Fecha: </dt><dd className="inline">{dateLabel(event.startAt)}{multiDay && ` al ${dateLabel(event.endAt)}`}</dd></div>
+          <div><dt className="inline font-semibold">Lugar: </dt><dd className="inline">{event.location} · {event.city}</dd></div>
+          <div><dt className="inline font-semibold">Presenta: </dt><dd className="inline">{event.organization}</dd></div>
+        </dl>
+        {event.status === 'rescheduled' && event.previousStartAt && <p className="text-sm text-info">Nueva fecha: {dateLabel(event.startAt)} · Antes: {dateLabel(event.previousStartAt)}</p>}
+        <div className="card-actions mt-1 items-center justify-between">
+          <FavoriteButton slug={event.slug} />
+          <Link to={`/eventos/${event.slug}`}><Button variant="ghost" className="text-primary">Ver detalles</Button></Link>
         </div>
       </div>
     </article>

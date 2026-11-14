@@ -2,6 +2,10 @@
 @import "./styles/theme.css";
 @plugin "daisyui";
 
+.font-note-hand {
+  font-family: "Patrick Hand", cursive;
+}
+
 :root {
   color-scheme: light;
   color: var(--color-text);
