@@ -58,3 +58,32 @@ export function updateEventStatus(slug, data, token) {
     body: JSON.stringify(data),
   })
 }
+
+export function getAnniversaries(token) {
+  return request(`${EVENTS_API_URL}/anniversaries`, {
+    headers: authHeaders(token),
+  })
+}
+
+export function createAnniversary(anniversary, token) {
+  return request(`${EVENTS_API_URL}/anniversaries`, {
+    method: 'POST',
+    headers: authHeaders(token),
+    body: JSON.stringify(anniversary),
+  })
+}
+
+export function updateAnniversaryStatus(id, data, token) {
+  return request(`${EVENTS_API_URL}/anniversaries/${encodeURIComponent(id)}/status`, {
+    method: 'PATCH',
+    headers: authHeaders(token),
+    body: JSON.stringify(data),
+  })
+}
+
+export function deleteAnniversary(id, token) {
+  return request(`${EVENTS_API_URL}/anniversaries/${encodeURIComponent(id)}`, {
+    method: 'DELETE',
+    headers: authHeaders(token),
+  })
+}

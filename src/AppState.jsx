@@ -1,6 +1,14 @@
 import { useEffect, useMemo, useState } from 'react'
 import { anniversaries as initialAnniversaries, events as initialEvents } from './data/events'
-import { createEvent, getEvents, updateEventStatus } from './api'
+import {
+  createAnniversary,
+  createEvent,
+  deleteAnniversary,
+  getAnniversaries,
+  getEvents,
+  updateAnniversaryStatus,
+  updateEventStatus,
+} from './api'
 import { StateContext } from './AppStateContext'
 
 const FAVORITES_KEY = 'agenda-goya:favorites:v1'
@@ -60,6 +68,17 @@ function toApiEvent(event) {
   }
 }
 
+function fromApiAnniversary(anniversary) {
+  return {
+    ...anniversary,
+    submittedAt: anniversary.submitted_at,
+    reviewNote: anniversary.review_note,
+    organizer: {
+      email: anniversary.organizer_email,
+    },
+  }
+}
+
 export function AppStateProvider({ children }) {
   const [session, setSession] = useState(readSession)
   const [favoriteSlugs, setFavoriteSlugs] = useState(readFavorites)
@@ -79,6 +98,16 @@ export function AppStateProvider({ children }) {
     getEvents(session?.token)
       .then((events) => {
         setEventList(events.map(fromApiEvent))
+      })
+      .catch((error) => {
+        if (error.status === 401) setSession(null)
+      })
+  }, [session?.token])
+
+  useEffect(() => {
+    getAnniversaries(session?.token)
+      .then((anniversaries) => {
+        setAnniversaryList(anniversaries.map(fromApiAnniversary))
       })
       .catch((error) => {
         if (error.status === 401) setSession(null)
@@ -117,14 +146,25 @@ export function AppStateProvider({ children }) {
       return mapped
     },
     anniversaryList,
-    submitAnniversary: (proposal) => setAnniversaryList((current) => [{
-      ...proposal,
-      organizer: organizerProfile,
-      id: `efemeride-${Date.now()}`,
-      status: 'pending',
-      submittedAt: new Date().toISOString().slice(0, 10),
-    }, ...current]),
-    updateAnniversary: (id, updates) => setAnniversaryList((current) => current.map((item) => item.id === id ? { ...item, ...updates } : item)),
+    submitAnniversary: async (proposal) => {
+      const saved = await createAnniversary(proposal, session?.token)
+      const mapped = fromApiAnniversary(saved)
+      setAnniversaryList((current) => [mapped, ...current.filter((item) => item.id !== mapped.id)])
+      return mapped
+    },
+    updateAnniversary: async (id, updates) => {
+      const saved = await updateAnniversaryStatus(id, {
+        status: updates.status,
+        review_note: updates.reviewNote || '',
+      }, session?.token)
+      const mapped = fromApiAnniversary(saved)
+      setAnniversaryList((current) => current.map((item) => String(item.id) === String(id) ? mapped : item))
+      return mapped
+    },
+    deleteAnniversary: async (id) => {
+      await deleteAnniversary(id, session?.token)
+      setAnniversaryList((current) => current.filter((item) => String(item.id) !== String(id)))
+    },
   }), [role, organizerProfile, session, favoriteSlugs, eventList, anniversaryList])
 
   return <StateContext.Provider value={value}>{children}</StateContext.Provider>
