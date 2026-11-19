@@ -15,6 +15,10 @@ function HomePage() {
   const [query, setQuery] = useState('')
   const navigate = useNavigate()
   const { role, logout, eventList, anniversaryList } = useAppState()
+  const handleLogout = () => {
+    logout()
+    navigate('/', { replace: true })
+  }
   const upcoming = eventList.filter((event) => ['published', 'rescheduled'].includes(event.status) && new Date(event.endAt || event.startAt) >= new Date()).sort((a, b) => new Date(a.startAt) - new Date(b.startAt)).slice(0, 3)
   const today = new Date()
   const anniversary = anniversaryList.find((item) => item.status === 'published' && item.month === today.getMonth() + 1 && item.day === today.getDate())
@@ -34,16 +38,16 @@ function HomePage() {
     { to: '/efemerides/proponer', label: 'Proponer efeméride' },
     { to: '/organizador', label: 'Panel organizador' },
   )
+  if (role === 'admin') links.push({ to: '/administracion', label: 'Administración' })
 
   return (
     <div>
       <Navbar brand={<><span className="text-primary">Agenda</span> Ciudad</>} links={links} action={role === 'visitor'
-        ? <Link to="/acceso"><Button variant="outline" className="hidden sm:inline-flex">Ingresar</Button></Link>
-        : <Button variant="outline" className="hidden sm:inline-flex" onClick={logout}>Cerrar sesión</Button>} />
+        ? <Link to="/acceso"><Button variant="outline">Ingresar</Button></Link>
+        : <Button variant="outline" onClick={handleLogout}>Cerrar sesión</Button>} />
       <main>
         <Hero backgroundImage={heroImage} eyebrow="Todo lo que pasa, en un solo lugar" title="Descubrí los próximos eventos de Goya, Corrientes" description="Encontrá actividades, cultura y encuentros para compartir con tu comunidad." actions={<>
           <Link to="/calendario"><Button className="border-0 bg-white text-primary hover:bg-white/90">Explorar eventos</Button></Link>
-          <Link to="/acceso"><Button variant="ghost" className="text-primary-content hover:bg-white/15">¿Organizás eventos? Ingresá</Button></Link>
         </>} />
         <div className="relative z-10 px-4">
           <form onSubmit={search} className="card mx-auto -mt-8 max-w-4xl bg-base-100 p-4 shadow-lg md:p-5">

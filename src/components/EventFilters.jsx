@@ -49,7 +49,7 @@ function upcomingDays() {
     const date = new Date(today)
     date.setDate(today.getDate() + index)
     const weekday = date.toLocaleDateString('es-AR', { weekday: 'long' })
-    const label = index === 0 ? 'Hoy' : index === 1 ? 'Mañana' : `Este ${weekday}`
+    const label = index === 0 ? 'Hoy' : `${weekday[0].toLocaleUpperCase('es-AR')}${weekday.slice(1)}`
     return { value: dateKey(date), label, dateLabel: date.toLocaleDateString('es-AR', { day: 'numeric', month: 'short' }) }
   })
 }

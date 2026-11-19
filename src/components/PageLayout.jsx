@@ -1,17 +1,20 @@
 import Button from './Button'
 import Footer from './Footer'
 import Navbar from './Navbar'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useAppState } from '../AppStateContext'
 
 function PageLayout({ children }) {
   const { role, logout } = useAppState()
+  const navigate = useNavigate()
+  const handleLogout = () => {
+    logout()
+    navigate('/', { replace: true })
+  }
   const links = [
     { to: '/calendario', label: 'Calendario' },
     { to: '/guardados', label: 'Mis eventos guardados' },
     { to: '/contacto', label: 'Contacto' },
-    { to: '/acceso', label: 'Acceso organizador' },
-    { to: '/registro', label: 'Registro' },
   ]
   if (role === 'organizer') links.splice(2, 0,
     { to: '/crear', label: 'Proponer evento' },
@@ -26,7 +29,7 @@ function PageLayout({ children }) {
         brand={<><span className="text-primary">Agenda</span> Ciudad</>}
         brandHref="/"
         links={links}
-        action={<div className="flex items-center gap-2"><span className="hidden text-xs text-base-content/60 md:inline">{role === 'visitor' ? 'Visitante' : role === 'organizer' ? 'Organizador' : 'Administrador'}</span>{role === 'visitor' ? <Link to="/acceso"><Button variant="outline" className="hidden sm:inline-flex">Ingresar</Button></Link> : <Button variant="outline" className="hidden sm:inline-flex" onClick={logout}>Cerrar sesión</Button>}</div>}
+        action={<div className="flex items-center gap-2"><span className="hidden text-xs text-base-content/60 md:inline">{role === 'visitor' ? 'Visitante' : role === 'organizer' ? 'Organizador' : 'Administrador'}</span>{role === 'visitor' ? <Link to="/acceso"><Button variant="outline">Ingresar</Button></Link> : <Button variant="outline" onClick={handleLogout}>Cerrar sesión</Button>}</div>}
       />
       <main>{children}</main>
       <Footer id="pie">
