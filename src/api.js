@@ -59,6 +59,14 @@ export function updateEventStatus(slug, data, token) {
   })
 }
 
+export function deleteEvent(slug, reason, token) {
+  return request(`${EVENTS_API_URL}/events/${encodeURIComponent(slug)}`, {
+    method: 'DELETE',
+    headers: authHeaders(token),
+    body: JSON.stringify({ reason }),
+  })
+}
+
 export function getAnniversaries(token) {
   return request(`${EVENTS_API_URL}/anniversaries`, {
     headers: authHeaders(token),
@@ -81,9 +89,10 @@ export function updateAnniversaryStatus(id, data, token) {
   })
 }
 
-export function deleteAnniversary(id, token) {
+export function deleteAnniversary(id, reason, token) {
   return request(`${EVENTS_API_URL}/anniversaries/${encodeURIComponent(id)}`, {
     method: 'DELETE',
     headers: authHeaders(token),
+    body: JSON.stringify({ reason }),
   })
 }

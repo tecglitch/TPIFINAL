@@ -3,7 +3,8 @@ import { anniversaries as initialAnniversaries, events as initialEvents } from '
 import {
   createAnniversary,
   createEvent,
-  deleteAnniversary,
+  deleteAnniversary as deleteAnniversaryRequest,
+  deleteEvent as deleteEventRequest,
   getAnniversaries,
   getEvents,
   updateAnniversaryStatus,
@@ -145,6 +146,12 @@ export function AppStateProvider({ children }) {
       setEventList((current) => current.map((event) => event.slug === slug ? mapped : event))
       return mapped
     },
+    deleteEvent: async (slug, reason) => {
+      const saved = await deleteEventRequest(slug, reason, session?.token)
+      const mapped = fromApiEvent(saved)
+      setEventList((current) => current.filter((event) => event.slug !== mapped.slug))
+      return mapped
+    },
     anniversaryList,
     submitAnniversary: async (proposal) => {
       const saved = await createAnniversary(proposal, session?.token)
@@ -161,9 +168,11 @@ export function AppStateProvider({ children }) {
       setAnniversaryList((current) => current.map((item) => String(item.id) === String(id) ? mapped : item))
       return mapped
     },
-    deleteAnniversary: async (id) => {
-      await deleteAnniversary(id, session?.token)
-      setAnniversaryList((current) => current.filter((item) => String(item.id) !== String(id)))
+    deleteAnniversary: async (id, reason) => {
+      const saved = await deleteAnniversaryRequest(id, reason, session?.token)
+      const mapped = fromApiAnniversary(saved)
+      setAnniversaryList((current) => current.filter((item) => String(item.id) !== String(mapped.id)))
+      return mapped
     },
   }), [role, organizerProfile, session, favoriteSlugs, eventList, anniversaryList])
 
