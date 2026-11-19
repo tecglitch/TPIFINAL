@@ -160,27 +160,6 @@ body {
   color: #f3d9b2;
 }
 
-.scene-branch {
-  position: absolute;
-  z-index: 0;
-  width: clamp(7rem, 11vw, 10rem);
-  aspect-ratio: 1;
-  object-fit: contain;
-  opacity: 0.84;
-  pointer-events: none;
-  user-select: none;
-  filter: saturate(0.92) drop-shadow(9px 13px 11px rgb(20 12 4 / 40%));
-  transform-style: preserve-3d;
-  animation: foliage-drift 22s ease-in-out infinite alternate;
-}
-
-.scene-branch--bottom-right {
-  right: -4.5rem;
-  bottom: calc(clamp(1.5rem, 4vw, 3.5rem) - 0.45rem);
-  transform: perspective(1000px) rotateY(-8deg) rotateZ(14deg);
-  animation-delay: -15s;
-}
-
 .floating-leaf {
   position: absolute;
   z-index: 2;
@@ -292,16 +271,6 @@ body {
     width: 3.25rem;
   }
 
-  .scene-branch {
-    width: 6rem;
-    opacity: 0.6;
-  }
-
-  .scene-branch--bottom-right {
-    bottom: calc(1.5rem - 0.4rem);
-    right: -2.5rem;
-  }
-
   .event-card-grid > .event-paper {
     rotate: 0deg;
   }
@@ -317,7 +286,6 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .scene-branch,
   .floating-leaf {
     animation: none;
   }
