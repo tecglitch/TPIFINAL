@@ -14,9 +14,9 @@ function AdminDashboardPage() {
   const ordered = useMemo(() => eventList
     .filter((event) => event.status === 'pending')
     .sort((a, b) => new Date(a.startAt) - new Date(b.startAt) || (a.submittedAt || '').localeCompare(b.submittedAt || '')), [eventList])
-  if (role !== 'admin') return <PageLayout><section className="mx-auto max-w-3xl px-6 py-16"><Card className="p-8 text-center"><h1 className="text-2xl font-bold">Administración de demostración</h1><p className="mt-3">Activá la vista desde el acceso. Las acciones son temporales y no constituyen autorización o moderación segura.</p><Link to="/acceso"><Button className="mt-5">Activar modo administrador</Button></Link></Card></section></PageLayout>
-  return <PageLayout><section className="mx-auto max-w-6xl px-6 py-12 md:py-16"><SectionTitle eyebrow="Revisión · modo demo" title="Panel de administración" />
-    <p className="mb-6 rounded-box bg-warning/15 p-4 text-sm">Las acciones cambian el estado solo en memoria. No existe verificación de permisos ni moderación segura hasta que se implemente backend.</p>
+  if (role !== 'admin') return <PageLayout><section className="mx-auto max-w-3xl px-6 py-16"><Card className="p-8 text-center"><h1 className="text-2xl font-bold">Administración restringida</h1><p className="mt-3">Necesitás una cuenta con rol administrador para acceder a esta sección.</p><Link to="/acceso"><Button className="mt-5">Ir al acceso</Button></Link></Card></section></PageLayout>
+  return <PageLayout><section className="mx-auto max-w-6xl px-6 py-12 md:py-16"><SectionTitle eyebrow="Revisión" title="Panel de administración" />
+    <p className="mb-6 rounded-box bg-info/10 p-4 text-sm">Las acciones de moderación se guardan en el backend.</p>
     <h2 className="mb-2 text-2xl font-bold">Propuestas pendientes de revisión</h2>
     <p className="mb-4 text-sm text-base-content/70">{ordered.length} {ordered.length === 1 ? 'propuesta pendiente' : 'propuestas pendientes'} · Ordenadas por fecha del evento, de la más próxima a la más lejana.</p>
     {ordered.length ? <div className="grid gap-4">{ordered.map((event) => <ReviewEvent key={event.slug} event={event} updateEvent={updateEvent} />)}</div> : <Card className="p-8 text-center"><h3 className="text-xl font-bold">No hay propuestas pendientes</h3><p className="mt-2 text-base-content/70">Cuando un organizador envíe un evento, aparecerá en esta lista.</p></Card>}

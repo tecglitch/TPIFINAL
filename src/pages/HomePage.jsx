@@ -14,7 +14,7 @@ import heroImage from '../images/playita.png'
 function HomePage() {
   const [query, setQuery] = useState('')
   const navigate = useNavigate()
-  const { eventList, anniversaryList } = useAppState()
+  const { role, logout, eventList, anniversaryList } = useAppState()
   const upcoming = eventList.filter((event) => ['published', 'rescheduled'].includes(event.status) && new Date(event.endAt || event.startAt) >= new Date()).sort((a, b) => new Date(a.startAt) - new Date(b.startAt)).slice(0, 3)
   const today = new Date()
   const anniversary = anniversaryList.find((item) => item.status === 'published' && item.month === today.getMonth() + 1 && item.day === today.getDate())
@@ -24,12 +24,22 @@ function HomePage() {
     navigate(`/calendario?q=${encodeURIComponent(query)}`)
   }
 
+  const links = [
+    { to: '/calendario', label: 'Calendario' },
+    { to: '/guardados', label: 'Mis eventos guardados' },
+    { to: '/contacto', label: 'Contacto' },
+  ]
+  if (role === 'organizer') links.push(
+    { to: '/crear', label: 'Proponer evento' },
+    { to: '/efemerides/proponer', label: 'Proponer efeméride' },
+    { to: '/organizador', label: 'Panel organizador' },
+  )
+
   return (
     <div>
-      <Navbar brand={<><span className="text-primary">Agenda</span> Ciudad</>} links={[
-        { to: '/calendario', label: 'Calendario' }, { to: '/guardados', label: 'Mis eventos guardados' },
-          { to: '/contacto', label: 'Contacto' },
-      ]} action={<Link to="/acceso"><Button variant="outline" className="hidden sm:inline-flex">Acceso organizador</Button></Link>} />
+      <Navbar brand={<><span className="text-primary">Agenda</span> Ciudad</>} links={links} action={role === 'visitor'
+        ? <Link to="/acceso"><Button variant="outline" className="hidden sm:inline-flex">Ingresar</Button></Link>
+        : <Button variant="outline" className="hidden sm:inline-flex" onClick={logout}>Cerrar sesión</Button>} />
       <main>
         <Hero backgroundImage={heroImage} eyebrow="Todo lo que pasa, en un solo lugar" title="Descubrí los próximos eventos de Goya, Corrientes" description="Encontrá actividades, cultura y encuentros para compartir con tu comunidad." actions={<>
           <Link to="/calendario"><Button className="border-0 bg-white text-primary hover:bg-white/90">Explorar eventos</Button></Link>
