@@ -18,7 +18,7 @@ function EventCard({ event, className = '' }) {
           <StatusBadge status={event.status} />
         </div>
         <h3 className="card-title font-note-hand text-xl">{event.title}</h3>
-        <p className="text-sm text-base-content/75">{event.description}</p>
+        <p className="event-card-description text-sm text-base-content/75">{event.description}</p>
         <dl className="font-note-hand grid gap-1 border-t border-base-300 pt-3 text-sm text-base-content/80">
           <div><dt className="inline font-semibold">Fecha: </dt><dd className="inline">{dateLabel(event.startAt)}{multiDay && ` al ${dateLabel(event.endAt)}`}</dd></div>
           <div><dt className="inline font-semibold">Lugar: </dt><dd className="inline">{event.location} · {event.city}</dd></div>

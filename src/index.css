@@ -22,3 +22,11 @@ body {
 #root {
   min-height: 100svh;
 }
+
+.event-card-description {
+  display: -webkit-box;
+  height: 3.75rem;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
