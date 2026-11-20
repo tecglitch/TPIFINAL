@@ -4,6 +4,7 @@ const city = 'Goya, Corrientes'
 const organizerProfile = { name: 'Juan Pérez', email: 'juan@ejemplo.com', phone: '+54 3777 555 010' }
 
 export const statusLabels = {
+  deleted: 'Eliminado',
   pending: 'Pendiente de revisión',
   changes_requested: 'Cambios solicitados',
   published: 'Publicado',
@@ -15,7 +16,7 @@ export const statusLabels = {
 }
 
 // Estos estados forman parte de la agenda pública; el resto corresponde a revisión interna.
-export const isPublicEvent = (event) => ['published', 'suspended', 'rescheduled', 'cancelled', 'past'].includes(event.status)
+export const isPublicEvent = (event) => ['published', 'suspended', 'rescheduled', 'past'].includes(event.status)
 
 export const categories = [
   { icon: '🎭', name: 'Cultura', count: 12 },

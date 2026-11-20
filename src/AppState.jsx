@@ -96,24 +96,24 @@ export function AppStateProvider({ children }) {
   }, [session])
 
   useEffect(() => {
-    getEvents(session?.token)
+    getEvents(session?.token, session?.user?.role === 'admin')
       .then((events) => {
         setEventList(events.map(fromApiEvent))
       })
       .catch((error) => {
         if (error.status === 401) setSession(null)
       })
-  }, [session?.token])
+  }, [session?.token, session?.user?.role])
 
   useEffect(() => {
-    getAnniversaries(session?.token)
+    getAnniversaries(session?.token, session?.user?.role === 'admin')
       .then((anniversaries) => {
         setAnniversaryList(anniversaries.map(fromApiAnniversary))
       })
       .catch((error) => {
         if (error.status === 401) setSession(null)
       })
-  }, [session?.token])
+  }, [session?.token, session?.user?.role])
 
   const role = session?.user?.role || 'visitor'
   const organizerProfile = session?.user || null

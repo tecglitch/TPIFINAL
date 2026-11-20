@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import Button from './Button'
+import CalendarButton from './CalendarButton'
 import FavoriteButton from './FavoriteButton'
 import StatusBadge from './StatusBadge'
 
@@ -25,8 +26,8 @@ function EventCard({ event, className = '' }) {
           <div><dt className="inline font-semibold">Presenta: </dt><dd className="inline">{event.organization}</dd></div>
         </dl>
         {event.status === 'rescheduled' && event.previousStartAt && <p className="text-sm text-info">Nueva fecha: {dateLabel(event.startAt)} · Antes: {dateLabel(event.previousStartAt)}</p>}
-        <div className="card-actions mt-1 items-center justify-between">
-          <FavoriteButton slug={event.slug} />
+        <div className="card-actions mt-1 items-center justify-between gap-2">
+          <div className="flex flex-wrap gap-2"><FavoriteButton slug={event.slug} /><CalendarButton item={event} className="btn-sm" /></div>
           <Link to={`/eventos/${event.slug}`}><Button variant="ghost" className="text-primary">Ver detalles</Button></Link>
         </div>
       </div>

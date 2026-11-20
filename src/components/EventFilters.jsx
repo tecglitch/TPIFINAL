@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import Button from './Button'
 
 const monthNames = [
@@ -56,6 +56,7 @@ function upcomingDays() {
 
 function EventFilters({ filters, onChange, onClear, categories, years }) {
   const datePickerRef = useRef(null)
+  const [isOpen, setIsOpen] = useState(false)
   const set = (key) => (event) => onChange({ ...filters, [key]: event.target.value })
   const selectDay = (date) => onChange({ ...filters, date, dateText: formatDateForDisplay(date), quickRange: '', month: '', year: '' })
   const selectQuickRange = (quickRange) => onChange({ ...filters, quickRange, date: '', dateText: '', month: '', year: '' })
@@ -87,9 +88,39 @@ function EventFilters({ filters, onChange, onClear, categories, years }) {
     }
   }
   const invalidDate = filters.dateText?.length === 10 && !parseDisplayDate(filters.dateText)
+  const activeFilterCount = [
+    filters.query,
+    filters.organizer,
+    filters.category,
+    filters.ticketType,
+    filters.status,
+    filters.month,
+    filters.year,
+    filters.date,
+    filters.quickRange,
+    filters.multiDayOnly,
+  ].filter(Boolean).length
 
   return (
     <div className="mb-6 rounded-box bg-base-100 p-4 shadow-sm md:p-5">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <p className="font-semibold">Filtrar eventos</p>
+          {activeFilterCount > 0 && <p className="mt-1 text-sm text-base-content/65">{activeFilterCount} {activeFilterCount === 1 ? 'filtro activo' : 'filtros activos'}</p>}
+        </div>
+        <Button type="button" variant="outline" aria-expanded={isOpen} aria-controls="event-filters-panel" onClick={() => setIsOpen((current) => !current)}>
+          {isOpen ? 'Ocultar filtros' : 'Mostrar filtros'}{activeFilterCount > 0 && ` (${activeFilterCount})`}
+        </Button>
+      </div>
+
+      <div
+        id="event-filters-panel"
+        aria-hidden={!isOpen}
+        inert={!isOpen}
+        className={`grid transition-[grid-template-rows,opacity] duration-300 ease-out ${isOpen ? 'mt-5 grid-rows-[1fr] opacity-100' : 'pointer-events-none grid-rows-[0fr] opacity-0'}`}
+      >
+        <div className="min-h-0 overflow-hidden border-t border-base-300">
+          <div className="pt-5">
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
         <label className="form-control">
           <span className="label-text mb-1 font-semibold">Buscar evento</span>
@@ -207,6 +238,9 @@ function EventFilters({ filters, onChange, onClear, categories, years }) {
 
       <div className="mt-4 flex justify-end">
         <Button type="button" variant="outline" onClick={onClear}>Limpiar filtros</Button>
+      </div>
+          </div>
+        </div>
       </div>
     </div>
   )

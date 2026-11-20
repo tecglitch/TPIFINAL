@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAppState } from '../AppStateContext'
 
 function PageLayout({ children }) {
-  const { role, logout } = useAppState()
+  const { role, session, logout } = useAppState()
   const navigate = useNavigate()
   const handleLogout = () => {
     logout()
@@ -29,7 +29,7 @@ function PageLayout({ children }) {
         brand={<><span className="text-primary">Agenda</span> Ciudad</>}
         brandHref="/"
         links={links}
-        action={<div className="flex items-center gap-2"><span className="hidden text-xs text-base-content/60 md:inline">{role === 'visitor' ? 'Visitante' : role === 'organizer' ? 'Organizador' : 'Administrador'}</span>{role === 'visitor' ? <Link to="/acceso"><Button variant="outline">Ingresar</Button></Link> : <Button variant="outline" onClick={handleLogout}>Cerrar sesión</Button>}</div>}
+        action={<div className="flex items-center gap-2"><span className="hidden text-right text-xs text-base-content/60 md:inline">{session?.user?.email && <span className="block font-medium text-base-content">{session.user.email}</span>}<span className="block">{role === 'visitor' ? 'Visitante' : role === 'organizer' ? 'Organizador' : 'Administrador'}</span></span>{role === 'visitor' ? <Link to="/acceso"><Button variant="outline">Ingresar</Button></Link> : <Button variant="outline" onClick={handleLogout}>Cerrar sesión</Button>}</div>}
       />
       <main>{children}</main>
       <Footer id="pie">

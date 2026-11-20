@@ -1,9 +1,39 @@
+import { useState } from 'react'
 import Button from '../components/Button'
 import Card from '../components/Card'
 import PageLayout from '../components/PageLayout'
 import SectionTitle from '../components/SectionTitle'
+import { sendContactMessage } from '../api'
+import { useAppState } from '../AppStateContext'
 
 function ContactPage() {
+  const { session } = useAppState()
+  const [submitted, setSubmitted] = useState(false)
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
+
+  async function handleSubmit(event) {
+    event.preventDefault()
+    const form = new FormData(event.currentTarget)
+    setError('')
+    setSubmitted(false)
+    setLoading(true)
+    try {
+      await sendContactMessage({
+        name: form.get('name'),
+        email: form.get('email'),
+        subject: form.get('subject'),
+        message: form.get('message'),
+      })
+      event.currentTarget.reset()
+      setSubmitted(true)
+    } catch (requestError) {
+      setError(requestError.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <PageLayout>
       <div className="mx-auto max-w-5xl px-6 py-12 md:py-16">
@@ -28,12 +58,14 @@ function ContactPage() {
           </div>
           <Card className="p-6 md:p-8">
             <h2 className="mb-6 text-2xl font-bold">Enviá un mensaje</h2>
-            <form className="grid gap-4" onSubmit={(event) => event.preventDefault()}>
-              <input className="input input-bordered" required placeholder="Nombre" />
-              <input className="input input-bordered" type="email" required placeholder="Correo electrónico" />
-              <input className="input input-bordered" placeholder="Asunto" />
-              <textarea className="textarea textarea-bordered min-h-36" required placeholder="¿En qué podemos ayudarte?" />
-              <Button type="submit" className="mt-2 w-full sm:w-auto sm:justify-self-end">Enviar mensaje</Button>
+            <form className="grid gap-4" onSubmit={handleSubmit}>
+              <input name="name" className="input input-bordered" required placeholder="Nombre" defaultValue={session?.user?.name || ''} />
+              <input name="email" className="input input-bordered" type="email" required placeholder="Correo electrónico" defaultValue={session?.user?.email || ''} />
+              <input name="subject" className="input input-bordered" placeholder="Asunto" />
+              <textarea name="message" className="textarea textarea-bordered min-h-36" required placeholder="¿En qué podemos ayudarte?" />
+              {submitted && <p className="rounded-box bg-success/15 p-3 text-sm text-success">Tu mensaje fue enviado correctamente.</p>}
+              {error && <p className="rounded-box bg-error/15 p-3 text-sm text-error">{error}</p>}
+              <Button type="submit" disabled={loading} className="mt-2 w-full sm:w-auto sm:justify-self-end">{loading ? 'Enviando...' : 'Enviar mensaje'}</Button>
             </form>
           </Card>
         </div>

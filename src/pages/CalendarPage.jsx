@@ -81,8 +81,11 @@ function matchesMonthYear(event, selectedMonth, selectedYear) {
 function CalendarPage() {
   const [params] = useSearchParams()
   const [filters, setFilters] = useState(() => ({ ...emptyFilters, query: params.get('q') || '' }))
-  const { eventList } = useAppState()
-  const years = [...new Set(eventList.flatMap((event) => {
+  const { eventList, role } = useAppState()
+  const visibleEvents = role === 'admin'
+    ? eventList
+    : eventList.filter((event) => !['deleted', 'cancelled'].includes(event.status))
+  const years = [...new Set(visibleEvents.flatMap((event) => {
     const startYear = new Date(event.startAt).getFullYear()
     const endYear = new Date(event.endAt || event.startAt).getFullYear()
     return [startYear, endYear].filter((year) => Number.isFinite(year))
@@ -91,7 +94,7 @@ function CalendarPage() {
     const query = filters.query.trim().toLocaleLowerCase('es-AR')
     const organizerQuery = filters.organizer.trim().toLocaleLowerCase('es-AR')
     const quickRange = quickRangeBounds(filters.quickRange)
-    return eventList.filter(isPublicEvent).filter((event) => {
+    return visibleEvents.filter((event) => isPublicEvent(event) || (role === 'admin' && ['deleted', 'cancelled'].includes(event.status))).filter((event) => {
       const organization = [event.organization, event.organizer?.name].join(' ').toLocaleLowerCase('es-AR')
       const text = [event.title, event.location, event.category, event.city, organization].join(' ').toLocaleLowerCase('es-AR')
       const eventDuration = new Date(event.endAt || event.startAt) - new Date(event.startAt)
@@ -105,16 +108,16 @@ function CalendarPage() {
         && matchesMonthYear(event, filters.month, filters.year)
         && (!filters.multiDayOnly || eventDuration > 24 * 60 * 60 * 1000)
     }).sort((a, b) => new Date(a.startAt) - new Date(b.startAt) || (a.submittedAt || '').localeCompare(b.submittedAt || ''))
-  }, [eventList, filters])
+  }, [visibleEvents, role, filters])
 
   return (
     <PageLayout>
-      <div className="mx-auto max-w-6xl px-6 py-12 md:py-16">
+      <div className="mx-auto max-w-[1400px] px-6 py-12 md:py-16">
         <SectionTitle eyebrow="Agenda local" title="Calendario de eventos" />
         <p className="mb-5 text-base-content/70">Esta agenda muestra eventos publicados y sus estados públicos: suspendidos, reprogramados, cancelados o pasados. Las propuestas pendientes de revisión se ven solo en los paneles de organizador y administración.</p>
         <EventFilters filters={filters} onChange={setFilters} onClear={() => setFilters(emptyFilters)} categories={categories.map((category) => category.name)} years={years} />
         <p className="mb-4 text-sm text-base-content/70" aria-live="polite">{matches.length} {matches.length === 1 ? 'resultado' : 'resultados'}</p>
-        {matches.length ? <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">{matches.map((event) => <EventCard key={event.slug} event={event} />)}</div> : <div className="rounded-box bg-base-100 p-10 text-center"><h3 className="text-xl font-bold">No encontramos coincidencias</h3><p className="mt-2 text-base-content/70">Probá cambiar la búsqueda o limpiar los filtros.</p></div>}
+        {matches.length ? <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">{matches.map((event) => <EventCard key={event.slug} event={event} />)}</div> : <div className="rounded-box bg-base-100 p-10 text-center"><h3 className="text-xl font-bold">No encontramos coincidencias</h3><p className="mt-2 text-base-content/70">Probá cambiar la búsqueda o limpiar los filtros.</p></div>}
       </div>
     </PageLayout>
   )

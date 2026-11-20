@@ -39,8 +39,16 @@ export function registerAccount(data) {
   })
 }
 
-export function getEvents(token) {
-  return request(`${EVENTS_API_URL}/events`, {
+export function sendContactMessage(data) {
+  return request(`${EVENTS_API_URL}/contact`, {
+    method: 'POST',
+    body: JSON.stringify(data),
+  })
+}
+
+export function getEvents(token, includeDeleted = false) {
+  const query = includeDeleted ? '?include_deleted=true' : ''
+  return request(`${EVENTS_API_URL}/events${query}`, {
     headers: authHeaders(token),
   })
 }
@@ -69,8 +77,9 @@ export function deleteEvent(slug, reason, token) {
   })
 }
 
-export function getAnniversaries(token) {
-  return request(`${EVENTS_API_URL}/anniversaries`, {
+export function getAnniversaries(token, includeDeleted = false) {
+  const query = includeDeleted ? '?include_deleted=true' : ''
+  return request(`${EVENTS_API_URL}/anniversaries${query}`, {
     headers: authHeaders(token),
   })
 }

@@ -1,5 +1,6 @@
 import { Link, useParams } from 'react-router-dom'
 import Button from '../components/Button'
+import CalendarButton from '../components/CalendarButton'
 import FavoriteButton from '../components/FavoriteButton'
 import PageLayout from '../components/PageLayout'
 import StatusBadge from '../components/StatusBadge'
@@ -13,7 +14,7 @@ function EventDetailsPage() {
   const { eventList, role } = useAppState()
   const event = eventList.find((item) => item.slug === slug)
 
-  if (!event || (!isPublicEvent(event) && role === 'visitor')) return <PageLayout><section className="mx-auto max-w-3xl px-6 py-20 text-center"><h1 className="text-3xl font-black">{event ? 'Esta propuesta aún no es pública' : 'No encontramos ese evento'}</h1><p className="mt-3 text-base-content/70">{event ? 'Las propuestas en revisión solo están disponibles para organizadores y administración.' : 'Puede que el enlace ya no esté disponible.'}</p><Link to="/calendario"><Button className="mt-6">Volver al calendario</Button></Link></section></PageLayout>
+  if (!event || (!isPublicEvent(event) && role !== 'admin')) return <PageLayout><section className="mx-auto max-w-3xl px-6 py-20 text-center"><h1 className="text-3xl font-black">{event ? 'Esta propuesta aún no es pública' : 'No encontramos ese evento'}</h1><p className="mt-3 text-base-content/70">{event ? 'Las propuestas en revisión solo están disponibles para administración.' : 'Puede que el enlace ya no esté disponible.'}</p><Link to="/calendario"><Button className="mt-6">Volver al calendario</Button></Link></section></PageLayout>
 
   const start = new Date(event.startAt)
   const end = new Date(event.endAt || event.startAt)
@@ -28,7 +29,7 @@ function EventDetailsPage() {
         <div className="mt-6 overflow-hidden rounded-box bg-base-100 shadow-xl">
           <img className="h-64 w-full object-cover sm:h-80 md:h-[26rem]" src={event.image} alt={`Imagen de ${event.title}`} />
           <div className="p-6 md:p-10">
-            <div className="flex flex-wrap items-center justify-between gap-3"><div className="flex flex-wrap gap-2"><span className="badge badge-primary badge-outline">{event.category}</span><StatusBadge status={event.status} /></div><FavoriteButton slug={event.slug} /></div>
+            <div className="flex flex-wrap items-center justify-between gap-3"><div className="flex flex-wrap gap-2"><span className="badge badge-primary badge-outline">{event.category}</span><StatusBadge status={event.status} /></div><div className="flex flex-wrap gap-2"><FavoriteButton slug={event.slug} /><CalendarButton item={event} className="btn-sm" /></div></div>
             <h1 className="mt-4 text-3xl font-black leading-tight md:text-5xl">{event.title}</h1>
             <p className="mt-4 max-w-3xl text-lg leading-relaxed text-base-content/75">{event.description}</p>
             <div className="mt-8 grid gap-4 border-t border-base-300 pt-6 sm:grid-cols-2">

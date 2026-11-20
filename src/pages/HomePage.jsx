@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Button from '../components/Button'
 import CategoryCard from '../components/CategoryCard'
+import CalendarButton from '../components/CalendarButton'
 import EventCard from '../components/EventCard'
 import Footer from '../components/Footer'
 import Hero from '../components/Hero'
@@ -17,7 +18,7 @@ import woodTexture from '../images/dark-wood-planks.png'
 function HomePage() {
   const [query, setQuery] = useState('')
   const navigate = useNavigate()
-  const { role, logout, eventList, anniversaryList } = useAppState()
+  const { role, session, logout, eventList, anniversaryList } = useAppState()
   const handleLogout = () => {
     logout()
     navigate('/', { replace: true })
@@ -47,7 +48,7 @@ function HomePage() {
     <div>
       <Navbar brand={<><span className="text-primary">Agenda</span> Ciudad</>} links={links} action={role === 'visitor'
         ? <Link to="/acceso"><Button variant="outline">Ingresar</Button></Link>
-        : <Button variant="outline" onClick={handleLogout}>Cerrar sesión</Button>} />
+        : <div className="flex items-center gap-2"><span className="hidden text-right text-xs text-base-content/60 md:inline"><span className="block font-medium text-base-content">{session?.user?.email}</span><span className="block">{role === 'organizer' ? 'Organizador' : 'Administrador'}</span></span><Button variant="outline" onClick={handleLogout}>Cerrar sesión</Button></div>} />
       <main className="home-main">
         <CornerFoliage />
         <Hero backgroundImage={heroImage} eyebrow="Todo lo que pasa, en un solo lugar" title="Descubrí los próximos eventos de Goya, Corrientes" description="Encontrá actividades, cultura y encuentros para compartir con tu comunidad." actions={<>
@@ -68,7 +69,7 @@ function HomePage() {
                 <SectionTitle eyebrow="Memoria local" title="Un día como hoy…" className="wood-section-title" />
                 {anniversary ? <article className="grid overflow-hidden rounded-box bg-base-100 shadow-sm md:grid-cols-[1fr_1.4fr]">
                   <img className="h-52 w-full object-cover md:h-full" src={anniversary.image} alt="" />
-                  <div className="p-6 md:p-8"><p className="text-sm font-bold text-primary">Efeméride · {today.toLocaleDateString('es-AR', { day: 'numeric', month: 'long' })}</p><h3 className="mt-2 text-2xl font-black">{anniversary.title}</h3><p className="mt-3 text-base-content/75">{anniversary.description}</p><p className="mt-4 text-sm">Propuesta de {anniversary.organization}</p></div>
+                  <div className="p-6 md:p-8"><p className="text-sm font-bold text-primary">Efeméride · {today.toLocaleDateString('es-AR', { day: 'numeric', month: 'long' })}</p><h3 className="mt-2 text-2xl font-black">{anniversary.title}</h3><p className="mt-3 text-base-content/75">{anniversary.description}</p><p className="mt-4 text-sm">Propuesta de {anniversary.organization}</p><CalendarButton item={anniversary} className="mt-5" /></div>
                 </article> : <p className="rounded-box bg-base-100 p-5 text-base-content/70">Hoy no hay una efeméride publicada. Las organizaciones pueden iniciar sesión para proponer una.</p>}
               </section>
               <section id="eventos" className="mx-auto max-w-6xl px-6 pb-16">
