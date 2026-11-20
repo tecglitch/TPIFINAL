@@ -148,8 +148,8 @@ export function AppStateProvider({ children }) {
     },
     deleteEvent: async (slug, reason) => {
       const saved = await deleteEventRequest(slug, reason, session?.token)
-      const mapped = fromApiEvent(saved)
-      setEventList((current) => current.filter((event) => event.slug !== mapped.slug))
+      const mapped = saved ? fromApiEvent(saved) : null
+      setEventList((current) => current.filter((event) => event.slug !== slug))
       return mapped
     },
     anniversaryList,
@@ -170,8 +170,8 @@ export function AppStateProvider({ children }) {
     },
     deleteAnniversary: async (id, reason) => {
       const saved = await deleteAnniversaryRequest(id, reason, session?.token)
-      const mapped = fromApiAnniversary(saved)
-      setAnniversaryList((current) => current.filter((item) => String(item.id) !== String(mapped.id)))
+      const mapped = saved ? fromApiAnniversary(saved) : null
+      setAnniversaryList((current) => current.filter((item) => String(item.id) !== String(id)))
       return mapped
     },
   }), [role, organizerProfile, session, favoriteSlugs, eventList, anniversaryList])

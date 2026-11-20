@@ -10,6 +10,8 @@ async function request(url, options = {}) {
     },
   })
 
+  if (response.status === 204) return null
+
   const body = await response.json().catch(() => null)
   if (!response.ok) {
     const error = new Error(body?.message || body?.detail || 'No se pudo completar la operación')
