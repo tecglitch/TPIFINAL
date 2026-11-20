@@ -39,6 +39,28 @@ export function registerAccount(data) {
   })
 }
 
+export function getFavorites(token) {
+  return request(`${AUTH_API_URL}/api/auth/favorites/`, {
+    headers: authHeaders(token),
+  })
+}
+
+export function addFavorite(slug, token) {
+  return request(`${AUTH_API_URL}/api/auth/favorites/`, {
+    method: 'POST',
+    headers: authHeaders(token),
+    body: JSON.stringify({ slug }),
+  })
+}
+
+export function removeFavorite(slug, token) {
+  return request(`${AUTH_API_URL}/api/auth/favorites/`, {
+    method: 'DELETE',
+    headers: authHeaders(token),
+    body: JSON.stringify({ slug }),
+  })
+}
+
 export function sendContactMessage(data) {
   return request(`${EVENTS_API_URL}/contact`, {
     method: 'POST',

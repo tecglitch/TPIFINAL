@@ -5,6 +5,9 @@ import {
   createEvent,
   deleteAnniversary as deleteAnniversaryRequest,
   deleteEvent as deleteEventRequest,
+  addFavorite as addFavoriteRequest,
+  getFavorites,
+  removeFavorite as removeFavoriteRequest,
   getAnniversaries,
   getEvents,
   updateAnniversaryStatus,
@@ -87,8 +90,10 @@ export function AppStateProvider({ children }) {
   const [anniversaryList, setAnniversaryList] = useState(initialAnniversaries)
 
   useEffect(() => {
-    localStorage.setItem(FAVORITES_KEY, JSON.stringify(favoriteSlugs))
-  }, [favoriteSlugs])
+    if (!session) {
+      localStorage.setItem(FAVORITES_KEY, JSON.stringify(favoriteSlugs))
+    }
+  }, [favoriteSlugs, session])
 
   useEffect(() => {
     if (session) localStorage.setItem(SESSION_KEY, JSON.stringify(session))
@@ -104,6 +109,15 @@ export function AppStateProvider({ children }) {
         if (error.status === 401) setSession(null)
       })
   }, [session?.token, session?.user?.role])
+
+  useEffect(() => {
+    if (!session?.token) return
+    getFavorites(session.token)
+      .then((result) => setFavoriteSlugs(result.favorites || []))
+      .catch((error) => {
+        if (error.status === 401) setSession(null)
+      })
+  }, [session?.token])
 
   useEffect(() => {
     getAnniversaries(session?.token, session?.user?.role === 'admin')
@@ -123,11 +137,27 @@ export function AppStateProvider({ children }) {
     organizerProfile,
     session,
     login: setSession,
-    logout: () => setSession(null),
+    logout: () => {
+      setSession(null)
+      setFavoriteSlugs(readFavorites())
+    },
     favoriteSlugs,
-    toggleFavorite: (slug) => setFavoriteSlugs((current) => current.includes(slug)
-      ? current.filter((item) => item !== slug)
-      : [...current, slug]),
+    toggleFavorite: async (slug) => {
+      const isSaved = favoriteSlugs.includes(slug)
+      setFavoriteSlugs((current) => isSaved
+        ? current.filter((item) => item !== slug)
+        : [...current, slug])
+      if (!session?.token) return
+      try {
+        if (isSaved) await removeFavoriteRequest(slug, session.token)
+        else await addFavoriteRequest(slug, session.token)
+      } catch (error) {
+        setFavoriteSlugs((current) => isSaved
+          ? [...current, slug]
+          : current.filter((item) => item !== slug))
+        if (error.status === 401) setSession(null)
+      }
+    },
     eventList,
     submitEvent: async (proposal) => {
       const saved = await createEvent(toApiEvent(proposal), session?.token)
