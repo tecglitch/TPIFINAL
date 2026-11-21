@@ -80,7 +80,11 @@ function matchesMonthYear(event, selectedMonth, selectedYear) {
 
 function CalendarPage() {
   const [params] = useSearchParams()
-  const [filters, setFilters] = useState(() => ({ ...emptyFilters, query: params.get('q') || '' }))
+  const [filters, setFilters] = useState(() => ({
+    ...emptyFilters,
+    query: params.get('q') || '',
+    category: params.get('category') || '',
+  }))
   const { eventList, role } = useAppState()
   const visibleEvents = role === 'admin'
     ? eventList

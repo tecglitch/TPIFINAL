@@ -6,6 +6,15 @@
   font-family: "Patrick Hand", cursive;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Patrick Hand", cursive;
+}
+
 :root {
   color-scheme: light;
   color: var(--color-text);

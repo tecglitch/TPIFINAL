@@ -35,7 +35,7 @@ function PageLayout({ children }) {
       <Footer id="pie">
         <aside>
           <p className="text-lg font-bold">Agenda Ciudad</p>
-          <p>Una agenda hecha por y para la comunidad.</p>
+          <p>Una agenda hecha por y para la comunidad. ♥</p>
           <p>© 2026 Agenda Ciudad</p>
         </aside>
       </Footer>

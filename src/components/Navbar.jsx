@@ -1,5 +1,6 @@
 import Button from './Button'
 import { Link } from 'react-router-dom'
+import goyaLetters from '../images/goya-sculptural-letters.png'
 
 function Navbar({ brand, brandHref = '/', links = [], menuLabel = 'Abrir menú', action }) {
   const renderLink = (link) => {
@@ -22,7 +23,7 @@ function Navbar({ brand, brandHref = '/', links = [], menuLabel = 'Abrir menú',
           </ul>
         </div>
         <Link className="btn btn-ghost text-xl font-black tracking-tight" to={brandHref}>
-          {brand}
+          <span className="flex items-center gap-2">{brand}<img className="h-8 w-auto max-w-[100px] object-contain" src={goyaLetters} alt="Letras escultóricas de Goya" /></span>
         </Link>
       </div>
       <nav className="navbar-center hidden lg:flex">

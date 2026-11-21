@@ -11,7 +11,7 @@ import SectionTitle from '../components/SectionTitle'
 import CornerFoliage from '../components/CornerFoliage'
 import WoodFrameFoliage from '../components/WoodFrameFoliage'
 import { useAppState } from '../AppStateContext'
-import { categories } from '../data/events'
+import { categories, isPublicEvent } from '../data/events'
 import heroImage from '../images/playita.png'
 import woodTexture from '../images/dark-wood-planks.png'
 
@@ -19,6 +19,7 @@ function HomePage() {
   const [query, setQuery] = useState('')
   const navigate = useNavigate()
   const { role, session, logout, eventList, anniversaryList } = useAppState()
+  const countableEvents = eventList.filter((event) => isPublicEvent(event) || (role === 'admin' && ['deleted', 'cancelled'].includes(event.status)))
   const handleLogout = () => {
     logout()
     navigate('/', { replace: true })
@@ -65,7 +66,7 @@ function HomePage() {
                   </label>
                 </form>
               </div>
-              <section className="font-note-hand mx-auto max-w-6xl px-6 py-12">
+              <section className="mx-auto max-w-6xl px-6 py-12">
                 <SectionTitle eyebrow="Memoria local" title="Un día como hoy…" className="wood-section-title" />
                 {anniversary ? <article className="grid overflow-hidden rounded-box bg-base-100 shadow-sm md:grid-cols-[1fr_1.4fr]">
                   <img className="h-52 w-full object-cover md:h-full" src={anniversary.image} alt="" />
@@ -77,13 +78,13 @@ function HomePage() {
                 {upcoming.length ? <div className="event-card-grid grid gap-6 md:grid-cols-2 lg:grid-cols-3">{upcoming.map((event) => <EventCard key={event.slug} event={event} className="event-paper" />)}</div> : <p className="rounded-box bg-base-100 p-6">Todavía no hay próximos eventos publicados.</p>}
               </section>
               <section id="categorias" className="px-6 py-16">
-                <div className="mx-auto max-w-6xl"><SectionTitle eyebrow="Explorá" title="Encontrá algo para vos" className="wood-section-title" /><div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5">{categories.map((category) => <CategoryCard key={category.name} {...category} countLabel="eventos" />)}</div></div>
+                <div className="mx-auto max-w-6xl"><SectionTitle eyebrow="Explorá" title="Encontrá algo para vos" className="wood-section-title font-note-hand" /><div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5">{categories.map((category) => <CategoryCard key={category.name} {...category} count={countableEvents.filter((event) => event.category === category.name).length} countLabel="eventos" to={`/calendario?category=${encodeURIComponent(category.name)}`} />)}</div></div>
               </section>
             </div>
           </div>
         </div>
       </main>
-      <Footer id="contacto"><aside><p className="text-lg font-bold">Agenda Ciudad</p><p>Una agenda hecha por y para la comunidad.</p><p>© 2026 Agenda Ciudad</p></aside></Footer>
+      <Footer id="contacto"><aside><p className="text-lg font-bold">Agenda Ciudad</p><p>Una agenda hecha por y para la comunidad. ♥</p><p>© 2026 Agenda Ciudad</p></aside></Footer>
     </div>
   )
 }
