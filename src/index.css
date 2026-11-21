@@ -184,14 +184,14 @@ body {
 }
 
 .floating-leaf--hero-upper-left {
-  top: 5%;
-  left: 15%;
+  top: clamp(5rem, 18vh, 8rem);
+  left: 14%;
   width: clamp(2.5rem, 3.2vw, 3.25rem);
   transform: perspective(700px) rotateY(10deg) rotateZ(24deg);
 }
 
 .floating-leaf--hero-lower-left {
-  top: 21%;
+  top: clamp(18rem, 58vh, 27rem);
   left: 9%;
   width: clamp(2.5rem, 3.2vw, 3.25rem);
   transform: perspective(700px) rotateX(-10deg) rotateZ(-28deg);
@@ -199,7 +199,7 @@ body {
 }
 
 .floating-leaf--hero-lower-right {
-  top: 19%;
+  top: clamp(16rem, 52vh, 24rem);
   right: 7%;
   width: clamp(2.5rem, 3.2vw, 3.25rem);
   filter: blur(0.25px) drop-shadow(4px 8px 6px rgb(20 12 4 / 40%));
@@ -207,7 +207,7 @@ body {
 }
 
 .floating-leaf--board-open-space {
-  top: 37%;
+  top: 36%;
   left: 64%;
   width: clamp(2.75rem, 3.5vw, 3.5rem);
   transform: perspective(700px) rotateX(9deg) rotateZ(17deg);

@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import Button from './Button'
 import CalendarButton from './CalendarButton'
 import FavoriteButton from './FavoriteButton'
+import eventImage from '../images/playita.png'
 import StatusBadge from './StatusBadge'
 
 const dateLabel = (value) => new Date(value).toLocaleDateString('es-AR', { day: 'numeric', month: 'long', year: 'numeric' })
@@ -12,7 +13,7 @@ function EventCard({ event, className = '' }) {
   const multiDay = start.toDateString() !== end.toDateString()
   return (
     <article className={`card overflow-hidden border border-amber-200 bg-gradient-to-br from-amber-50 via-yellow-50 to-yellow-100 shadow-sm transition hover:-translate-y-1 hover:shadow-lg ${className}`}>
-      <img className="h-40 w-full object-cover" src={event.image} alt={`Imagen de ${event.title}`} />
+      <img className="h-40 w-full object-cover" src={event.image || eventImage} alt={`Imagen de ${event.title}`} />
       <div className="card-body gap-3 p-5">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <span className="badge badge-primary badge-outline">{event.category}</span>

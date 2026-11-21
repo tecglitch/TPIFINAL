@@ -3,6 +3,7 @@ import Button from '../components/Button'
 import CalendarButton from '../components/CalendarButton'
 import FavoriteButton from '../components/FavoriteButton'
 import PageLayout from '../components/PageLayout'
+import eventImage from '../images/playita.png'
 import StatusBadge from '../components/StatusBadge'
 import { useAppState } from '../AppStateContext'
 import { isPublicEvent } from '../data/events'
@@ -27,7 +28,7 @@ function EventDetailsPage() {
       <article className="mx-auto max-w-5xl px-6 py-10 md:py-14">
         <Link className="link link-hover text-sm font-semibold text-primary" to="/calendario">← Volver a los eventos</Link>
         <div className="mt-6 overflow-hidden rounded-box bg-base-100 shadow-xl">
-          <img className="h-64 w-full object-cover sm:h-80 md:h-[26rem]" src={event.image} alt={`Imagen de ${event.title}`} />
+          <img className="h-64 w-full object-cover sm:h-80 md:h-[26rem]" src={event.image || eventImage} alt={`Imagen de ${event.title}`} />
           <div className="p-6 md:p-10">
             <div className="flex flex-wrap items-center justify-between gap-3"><div className="flex flex-wrap gap-2"><span className="badge badge-primary badge-outline">{event.category}</span><StatusBadge status={event.status} /></div><div className="flex flex-wrap gap-2"><FavoriteButton slug={event.slug} /><CalendarButton item={event} className="btn-sm" /></div></div>
             <h1 className="mt-4 text-3xl font-black leading-tight md:text-5xl">{event.title}</h1>
