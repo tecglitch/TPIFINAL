@@ -9,6 +9,14 @@ import { useAppState } from '../AppStateContext'
 import { isPublicEvent } from '../data/events'
 
 const dateLabel = (value) => new Date(value).toLocaleDateString('es-AR', { day: 'numeric', month: 'long', year: 'numeric' })
+const timeLabel = (value) => new Date(value).toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' })
+const dateTimeRangeLabel = (startValue, endValue) => {
+  const end = endValue || startValue
+  const startDate = dateLabel(startValue)
+  const endDate = dateLabel(end)
+  const dateRange = startDate === endDate ? startDate : `${startDate} al ${endDate}`
+  return `${dateRange} · ${timeLabel(startValue)}–${timeLabel(end)}`
+}
 
 function EventDetailsPage() {
   const { slug } = useParams()
@@ -21,7 +29,7 @@ function EventDetailsPage() {
   const end = new Date(event.endAt || event.startAt)
   const mapQuery = encodeURIComponent(`${event.location}, ${event.city}`)
   const date = `${dateLabel(event.startAt)}${start.toDateString() !== end.toDateString() ? ` al ${dateLabel(event.endAt)}` : ''}`
-  const time = `${start.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' })}–${end.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' })}`
+  const time = `${timeLabel(event.startAt)}–${timeLabel(event.endAt || event.startAt)}`
 
   return (
     <PageLayout>
@@ -41,7 +49,7 @@ function EventDetailsPage() {
               {event.ticketType === 'paid' && event.price && <Detail label="Precio" value={event.price} icon="$" />}
             </div>
             {event.ticketType === 'paid' && event.ticketUrl && <a className="btn btn-primary mt-5" href={event.ticketUrl} target="_blank" rel="noreferrer">Comprar entradas</a>}
-            {event.previousStartAt && <div className="mt-5 rounded-box bg-info/10 p-4"><p className="font-bold">Evento reprogramado</p><p className="mt-1">Fecha anterior: {dateLabel(event.previousStartAt)}{event.previousEndAt ? ` al ${dateLabel(event.previousEndAt)}` : ''}</p><p>Nueva fecha: {dateLabel(event.startAt)}{event.endAt ? ` al ${dateLabel(event.endAt)}` : ''}</p></div>}
+            {event.previousStartAt && <div className="mt-5 rounded-box bg-info/10 p-4"><p className="font-bold">Evento reprogramado</p><p className="mt-1">Antes: {dateTimeRangeLabel(event.previousStartAt, event.previousEndAt)}</p><p>Ahora: {dateTimeRangeLabel(event.startAt, event.endAt)}</p></div>}
             {event.reviewNote && <div className="mt-5 rounded-box bg-warning/15 p-4"><p className="font-bold">Información del estado</p><p className="mt-1">{event.reviewNote}</p></div>}
             <section className="mt-10" aria-labelledby="location-heading">
               <div className="mb-4 flex flex-wrap items-end justify-between gap-3"><div><p className="text-sm font-semibold uppercase tracking-wide text-primary">Cómo llegar</p><h2 id="location-heading" className="mt-1 text-2xl font-bold">Ubicación</h2><p className="mt-1 text-base-content/70">{event.location}, {event.city}</p></div>

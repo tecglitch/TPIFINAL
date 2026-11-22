@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-label="Ilustracion historica de sufragio">
+  <defs>
+    <linearGradient id="bg" x2="0" y2="1"><stop stop-color="#2f665f"/><stop offset="1" stop-color="#eed89e"/></linearGradient>
+    <radialGradient id="glow"><stop stop-color="#fff4d9" stop-opacity=".45"/><stop offset="1" stop-color="#fff4d9" stop-opacity="0"/></radialGradient>
+    <pattern id="grain" width="54" height="54" patternUnits="userSpaceOnUse"><circle cx="4" cy="11" r="1.2" fill="#fff" opacity=".16"/><circle cx="39" cy="37" r="1" fill="#291b16" opacity=".13"/></pattern>
+  </defs>
+  <rect width="960" height="540" fill="url(#bg)"/>
+  <circle cx="480" cy="258" r="360" fill="url(#glow)"/>
+  <path d="M0 470q185-54 356-8t330 0q141-45 274-2v80H0z" fill="#172d35" opacity=".2"/>
+
+      <path d="M177 422q40-177 145-245m461 245q-42-177-146-245" fill="none" stroke="#1f5049" stroke-width="18" stroke-linecap="round"/>
+      <g fill="#76a977"><ellipse cx="249" cy="314" rx="44" ry="16" transform="rotate(-35 249 314)"/><ellipse cx="284" cy="255" rx="42" ry="15" transform="rotate(-48 284 255)"/><ellipse cx="709" cy="314" rx="44" ry="16" transform="rotate(35 709 314)"/><ellipse cx="674" cy="255" rx="42" ry="15" transform="rotate(48 674 255)"/></g>
+      <path d="M343 176h274l-25 262q-112 48-224 0z" fill="#f5e9cb" stroke="#c49a54" stroke-width="10"/>
+      <path d="M383 218h196v34H383z" fill="#d7c19a"/>
+      <path d="M391 284h178v100H391z" fill="#fffaf0" stroke="#96734b" stroke-width="5"/>
+      <path d="m424 330 36 33 77-72" fill="none" stroke="#7a4771" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <rect width="960" height="540" fill="url(#grain)"/>
+  <path d="M22 22h916v496H22z" fill="none" stroke="#fff4d9" stroke-opacity=".24" stroke-width="2" rx="20"/>
+</svg>

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-label="Ilustracion historica de caucete">
+  <defs>
+    <linearGradient id="bg" x2="0" y2="1"><stop stop-color="#193e58"/><stop offset="1" stop-color="#e5a456"/></linearGradient>
+    <radialGradient id="glow"><stop stop-color="#fff4d9" stop-opacity=".45"/><stop offset="1" stop-color="#fff4d9" stop-opacity="0"/></radialGradient>
+    <pattern id="grain" width="54" height="54" patternUnits="userSpaceOnUse"><circle cx="4" cy="11" r="1.2" fill="#fff" opacity=".16"/><circle cx="39" cy="37" r="1" fill="#291b16" opacity=".13"/></pattern>
+  </defs>
+  <rect width="960" height="540" fill="url(#bg)"/>
+  <circle cx="480" cy="258" r="360" fill="url(#glow)"/>
+  <path d="M0 470q185-54 356-8t330 0q141-45 274-2v80H0z" fill="#172d35" opacity=".2"/>
+
+      <path d="M0 345 170 175l108 118 126-174 160 195 110-132 174 163v195H0Z" fill="#315f72"/>
+      <path d="m0 381 205-135 129 121 150-102 168 112 133-82 175 102v143H0Z" fill="#75917c"/>
+      <path d="M0 421h960v119H0Z" fill="#c77f4d"/>
+      <g fill="#f3dfb1"><path d="M105 340h95v72h-95z"/><path d="m94 340 58-47 59 47z"/><path d="M239 356h71v56h-71z"/><path d="m228 356 47-39 47 39z"/></g>
+      <path d="M496 419l-30 34 25 19-35 40M498 420l32 28-18 19 28 26" fill="none" stroke="#4c3029" stroke-width="9" stroke-linecap="round"/>
+      <circle cx="771" cy="129" r="47" fill="#ffd990" opacity=".88"/>
+
+  <rect width="960" height="540" fill="url(#grain)"/>
+  <path d="M22 22h916v496H22z" fill="none" stroke="#fff4d9" stroke-opacity=".24" stroke-width="2" rx="20"/>
+</svg>

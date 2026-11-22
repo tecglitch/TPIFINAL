@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-label="Ilustracion historica de nobel">
+  <defs>
+    <linearGradient id="bg" x2="0" y2="1"><stop stop-color="#354b55"/><stop offset="1" stop-color="#d8b76c"/></linearGradient>
+    <radialGradient id="glow"><stop stop-color="#fff4d9" stop-opacity=".45"/><stop offset="1" stop-color="#fff4d9" stop-opacity="0"/></radialGradient>
+    <pattern id="grain" width="54" height="54" patternUnits="userSpaceOnUse"><circle cx="4" cy="11" r="1.2" fill="#fff" opacity=".16"/><circle cx="39" cy="37" r="1" fill="#291b16" opacity=".13"/></pattern>
+  </defs>
+  <rect width="960" height="540" fill="url(#bg)"/>
+  <circle cx="480" cy="258" r="360" fill="url(#glow)"/>
+  <path d="M0 470q185-54 356-8t330 0q141-45 274-2v80H0z" fill="#172d35" opacity=".2"/>
+
+      <path d="M290 415q190-96 380 0l-28 72H318z" fill="#84583a"/>
+      <path d="M345 399l35-176 199 0 37 176z" fill="#e8d8b8"/>
+      <path d="M380 234h198v27H380z" fill="#b38b4f"/>
+      <circle cx="480" cy="311" r="79" fill="#c99436" stroke="#f6dc93" stroke-width="12"/>
+      <circle cx="480" cy="311" r="57" fill="#e5bf69" stroke="#805c2f" stroke-width="5"/>
+      <path d="M453 335q27-51 54 0m-52-33h50m-25-34v19" fill="none" stroke="#72502b" stroke-width="8" stroke-linecap="round"/>
+      <path d="M675 127q-91 89-140 200m3-4q-27-64-67-77 11 56 64 83m12-22q49-33 93-21-40 43-89 48" fill="none" stroke="#eee0c5" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="672" cy="125" r="13" fill="#e3c271"/>
+
+  <rect width="960" height="540" fill="url(#grain)"/>
+  <path d="M22 22h916v496H22z" fill="none" stroke="#fff4d9" stroke-opacity=".24" stroke-width="2" rx="20"/>
+</svg>

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-label="Ilustracion historica de onu181">
+  <defs>
+    <linearGradient id="bg" x2="0" y2="1"><stop stop-color="#324760"/><stop offset="1" stop-color="#e5d6b2"/></linearGradient>
+    <radialGradient id="glow"><stop stop-color="#fff4d9" stop-opacity=".45"/><stop offset="1" stop-color="#fff4d9" stop-opacity="0"/></radialGradient>
+    <pattern id="grain" width="54" height="54" patternUnits="userSpaceOnUse"><circle cx="4" cy="11" r="1.2" fill="#fff" opacity=".16"/><circle cx="39" cy="37" r="1" fill="#291b16" opacity=".13"/></pattern>
+  </defs>
+  <rect width="960" height="540" fill="url(#bg)"/>
+  <circle cx="480" cy="258" r="360" fill="url(#glow)"/>
+  <path d="M0 470q185-54 356-8t330 0q141-45 274-2v80H0z" fill="#172d35" opacity=".2"/>
+
+      <path d="M118 408q362-96 724 0v78H118z" fill="#294151"/>
+      <path d="M197 391q283-95 566 0" fill="none" stroke="#d5c6a1" stroke-width="18"/>
+      <g fill="#7b8790"><path d="M219 393v45h25v-49zm53-14v59h25v-63zm53-13v72h25v-76zm53-9v81h25v-84zm53-7v88h25v-90zm53 0v90h25v-88zm53 7v84h25v-81zm53 9v76h25v-72zm53 13v63h25v-59zm53 14v49h25v-45z"/></g>
+      <circle cx="480" cy="210" r="119" fill="#dce6e2"/>
+      <path d="M390 211q90-125 180 0-90 126-180 0z" fill="#7ca89e"/>
+      <path d="M480 92v236M362 210h236" stroke="#f7f1dd" stroke-width="7"/>
+      <path d="M414 379h132" stroke="#e5d6b2" stroke-width="9" stroke-linecap="round"/>
+
+  <rect width="960" height="540" fill="url(#grain)"/>
+  <path d="M22 22h916v496H22z" fill="none" stroke="#fff4d9" stroke-opacity=".24" stroke-width="2" rx="20"/>
+</svg>

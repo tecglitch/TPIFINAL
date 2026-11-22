@@ -18,6 +18,10 @@ import { StateContext } from './AppStateContext'
 const FAVORITES_KEY = 'agenda-goya:favorites:v1'
 const SESSION_KEY = 'agenda-goya:session:v1'
 
+function toApiDateTime(value) {
+  return value ? new Date(value).toISOString() : value
+}
+
 function readFavorites() {
   try {
     const saved = JSON.parse(localStorage.getItem(FAVORITES_KEY) || '[]')
@@ -62,8 +66,8 @@ function toApiEvent(event) {
     description: event.description,
     image: null,
     image_source: event.imageSource || null,
-    start_at: event.startAt,
-    end_at: event.endAt,
+    start_at: toApiDateTime(event.startAt),
+    end_at: toApiDateTime(event.endAt),
     location: event.location,
     city: event.city,
     organization: event.organization,
@@ -170,8 +174,8 @@ export function AppStateProvider({ children }) {
       const saved = await updateEventStatus(slug, {
         status: updates.status,
         review_note: updates.reviewNote || '',
-        start_at: updates.startAt,
-        end_at: updates.endAt,
+        start_at: toApiDateTime(updates.startAt),
+        end_at: toApiDateTime(updates.endAt),
       }, session?.token)
       const mapped = fromApiEvent(saved)
       setEventList((current) => current.map((event) => event.slug === slug ? mapped : event))

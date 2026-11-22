@@ -1,4 +1,5 @@
 import eventImage from '../images/playita.png'
+import { upcomingAnniversaries } from './upcomingAnniversaries'
 
 const city = 'Goya, Corrientes'
 const organizerProfile = { name: 'Juan Pérez', email: 'juan@ejemplo.com', phone: '+54 3777 555 010' }
@@ -46,6 +47,7 @@ export const anniversaries = [
   { id: 'fiesta-del-surubi', month: 4, day: 24, title: 'La Fiesta Nacional del Surubí', description: 'Una celebración de la pesca deportiva, la cultura y el encuentro que identifica a Goya.', organization: 'Comisión Municipal de Pesca', image: eventImage, status: 'published', submittedAt: '2026-02-10' },
   { id: 'memoria-del-puerto', month: 11, day: 14, title: 'La vida junto al puerto', description: 'Historias de trabajo, navegación y encuentro que forman parte de la memoria de nuestra comunidad.', organization: 'Museo de la Ciudad', image: eventImage, status: 'published', submittedAt: '2026-10-30', organizer: organizerProfile },
   { id: 'memoria-del-puerto-pendiente', month: 11, day: 15, title: 'La vida junto al puerto: relatos de pescadores', description: 'Relatos de trabajo y navegación que forman parte de la memoria de la ribera goyana.', organization: 'Museo de la Ciudad', image: eventImage, status: 'pending', submittedAt: '2026-11-10', organizer: organizerProfile },
+  ...upcomingAnniversaries.map((item) => ({ ...item, status: 'published', submittedAt: '2026-11-22' })),
 ]
 
 export const getLocalDateTime = (value) => new Date(value).toLocaleString('es-AR', {

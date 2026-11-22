@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-label="Ilustracion historica de tutankhamun">
+  <defs>
+    <linearGradient id="bg" x2="0" y2="1"><stop stop-color="#12324e"/><stop offset="1" stop-color="#e9b74e"/></linearGradient>
+    <radialGradient id="glow"><stop stop-color="#fff4d9" stop-opacity=".45"/><stop offset="1" stop-color="#fff4d9" stop-opacity="0"/></radialGradient>
+    <pattern id="grain" width="54" height="54" patternUnits="userSpaceOnUse"><circle cx="4" cy="11" r="1.2" fill="#fff" opacity=".16"/><circle cx="39" cy="37" r="1" fill="#291b16" opacity=".13"/></pattern>
+  </defs>
+  <rect width="960" height="540" fill="url(#bg)"/>
+  <circle cx="480" cy="258" r="360" fill="url(#glow)"/>
+  <path d="M0 470q185-54 356-8t330 0q141-45 274-2v80H0z" fill="#172d35" opacity=".2"/>
+
+      <path d="M344 209q136-154 272 0l-36 230q-100 93-200 0z" fill="#d4a43a"/>
+      <path d="M360 215q120-125 240 0l-17 46H377z" fill="#187c8a"/>
+      <path d="M374 245q106 34 212 0l-27 159q-79 69-158 0z" fill="#efc54e"/>
+      <path d="M407 290q73-42 146 0l-19 102q-54 42-108 0z" fill="#214b6a"/>
+      <path d="M424 319q56-31 112 0v47q-56 34-112 0z" fill="#efbd47"/>
+      <path d="M480 285v105m-53-57h106" stroke="#f7df9c" stroke-width="8"/>
+      <path d="M435 450h90l-45 40z" fill="#c57d36"/>
+      <g fill="#f7df9c"><circle cx="264" cy="179" r="5"/><circle cx="691" cy="143" r="6"/><circle cx="740" cy="298" r="4"/><circle cx="248" cy="343" r="4"/></g>
+
+  <rect width="960" height="540" fill="url(#grain)"/>
+  <path d="M22 22h916v496H22z" fill="none" stroke="#fff4d9" stroke-opacity=".24" stroke-width="2" rx="20"/>
+</svg>

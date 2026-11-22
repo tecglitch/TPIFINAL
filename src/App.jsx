@@ -11,6 +11,7 @@ import OrganizerRegisterPage from './pages/OrganizerRegisterPage'
 import OrganizerDashboardPage from './pages/OrganizerDashboardPage'
 import AdminDashboardPage from './pages/AdminDashboardPage'
 import AnniversaryProposalPage from './pages/AnniversaryProposalPage'
+import AnniversaryDetailsPage from './pages/AnniversaryDetailsPage'
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route path="/organizador" element={<OrganizerDashboardPage />} />
           <Route path="/administracion" element={<AdminDashboardPage />} />
           <Route path="/efemerides/proponer" element={<AnniversaryProposalPage />} />
+          <Route path="/efemerides/:id" element={<AnniversaryDetailsPage />} />
           <Route path="*" element={<HomePage />} />
         </Routes>
       </BrowserRouter>

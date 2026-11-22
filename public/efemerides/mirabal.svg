@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-label="Ilustracion historica de mirabal">
+  <defs>
+    <linearGradient id="bg" x2="0" y2="1"><stop stop-color="#4f376f"/><stop offset="1" stop-color="#f0c6a5"/></linearGradient>
+    <radialGradient id="glow"><stop stop-color="#fff4d9" stop-opacity=".45"/><stop offset="1" stop-color="#fff4d9" stop-opacity="0"/></radialGradient>
+    <pattern id="grain" width="54" height="54" patternUnits="userSpaceOnUse"><circle cx="4" cy="11" r="1.2" fill="#fff" opacity=".16"/><circle cx="39" cy="37" r="1" fill="#291b16" opacity=".13"/></pattern>
+  </defs>
+  <rect width="960" height="540" fill="url(#bg)"/>
+  <circle cx="480" cy="258" r="360" fill="url(#glow)"/>
+  <path d="M0 470q185-54 356-8t330 0q141-45 274-2v80H0z" fill="#172d35" opacity=".2"/>
+
+      <circle cx="478" cy="284" r="167" fill="#68458b"/>
+      <path d="M385 350c-69-80-53-169 7-182 48-10 57 50 15 83 74-24 102 25 57 60-30 24-49 34-79 39z" fill="#d986ae"/>
+      <path d="M573 350c69-80 53-169-7-182-48-10-57 50-15 83-74-24-102 25-57 60 30 24 49 34 79 39z" fill="#f0a886"/>
+      <path d="M480 246c-47-51-106-25-71 27 24 36 48 54 71 72 23-18 47-36 71-72 35-52-24-78-71-27z" fill="#f7e6d2"/>
+      <path d="M480 341c-71 72-8 112 0 114 8-2 71-42 0-114z" fill="#d86d87"/>
+      <path d="M480 218v-53m-28 72-38-30m94 30 38-30" stroke="#ffd98f" stroke-width="7" stroke-linecap="round"/>
+
+  <rect width="960" height="540" fill="url(#grain)"/>
+  <path d="M22 22h916v496H22z" fill="none" stroke="#fff4d9" stroke-opacity=".24" stroke-width="2" rx="20"/>
+</svg>

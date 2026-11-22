@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-label="Ilustracion historica de slavery">
+  <defs>
+    <linearGradient id="bg" x2="0" y2="1"><stop stop-color="#443e38"/><stop offset="1" stop-color="#d9b77d"/></linearGradient>
+    <radialGradient id="glow"><stop stop-color="#fff4d9" stop-opacity=".45"/><stop offset="1" stop-color="#fff4d9" stop-opacity="0"/></radialGradient>
+    <pattern id="grain" width="54" height="54" patternUnits="userSpaceOnUse"><circle cx="4" cy="11" r="1.2" fill="#fff" opacity=".16"/><circle cx="39" cy="37" r="1" fill="#291b16" opacity=".13"/></pattern>
+  </defs>
+  <rect width="960" height="540" fill="url(#bg)"/>
+  <circle cx="480" cy="258" r="360" fill="url(#glow)"/>
+  <path d="M0 470q185-54 356-8t330 0q141-45 274-2v80H0z" fill="#172d35" opacity=".2"/>
+
+      <path d="M0 540V300q181-103 362 0t362 0q118-66 236-17v257z" fill="#70533d"/>
+      <path d="M0 400q240-124 480 0t480 0v140H0z" fill="#382f2a"/>
+      <path d="M385 302c-80-79-185-31-128 44l65 66m253-110c80-79 185-31 128 44l-65 66" fill="none" stroke="#c4a77a" stroke-width="24" stroke-linecap="round"/>
+      <path d="m453 346-48 48 30 30 45-48 45 48 30-30-48-48" fill="none" stroke="#e5c98d" stroke-width="17" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M478 72v148m-74-74h148" stroke="#f5d890" stroke-width="13" stroke-linecap="round"/>
+      <circle cx="480" cy="293" r="41" fill="#e8bf66" opacity=".85"/>
+
+  <rect width="960" height="540" fill="url(#grain)"/>
+  <path d="M22 22h916v496H22z" fill="none" stroke="#fff4d9" stroke-opacity=".24" stroke-width="2" rx="20"/>
+</svg>

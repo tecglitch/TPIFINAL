@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-label="Ilustracion de finanzas sostenibles">
+<defs><linearGradient id="bg" x2="0" y2="1"><stop stop-color="#3b5969"/><stop offset="1" stop-color="#e5dfc8"/></linearGradient><radialGradient id="glow"><stop stop-color="#fff4d9" stop-opacity=".45"/><stop offset="1" stop-color="#fff4d9" stop-opacity="0"/></radialGradient></defs>
+<rect width="960" height="540" fill="url(#bg)"/><circle cx="480" cy="258" r="360" fill="url(#glow)"/>
+<path d="M0 460q230-60 480-4t480-4v88H0z" fill="#213f45" opacity=".25"/>
+<path d="M216 284 480 144l264 140z" fill="#e6cf9d" stroke="#8b693b" stroke-width="11"/>
+<path d="M257 285h446v32H257zM238 428h484v31H238zM212 463h536v34H212z" fill="#9d7950"/>
+<g fill="#f1e5c8" stroke="#8b693b" stroke-width="7"><path d="M278 318h63v108h-63z"/><path d="M372 318h63v108h-63z"/><path d="M466 318h63v108h-63z"/><path d="M560 318h63v108h-63z"/></g>
+<circle cx="701" cy="163" r="67" fill="#d4a14e" stroke="#fff0c5" stroke-width="10"/><circle cx="701" cy="163" r="47" fill="none" stroke="#8c6530" stroke-width="5"/><path d="M701 130v67m-21-52h34q16 0 16 13t-17 13h-23q-17 0-17 14t17 14h32" fill="none" stroke="#704c26" stroke-width="7" stroke-linecap="round"/>
+<path d="M701 352q-5-54 4-92m-3 55q-43-32-73-22m75 33q39-39 73-35" fill="none" stroke="#4f7958" stroke-width="10" stroke-linecap="round"/><ellipse cx="635" cy="292" rx="28" ry="12" fill="#78a16d" transform="rotate(20 635 292)"/><ellipse cx="770" cy="278" rx="28" ry="12" fill="#78a16d" transform="rotate(-20 770 278)"/>
+<path d="M22 22h916v496H22z" fill="none" stroke="#fff4d9" stroke-opacity=".24" stroke-width="2"/>
+</svg>

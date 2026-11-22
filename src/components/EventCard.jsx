@@ -12,7 +12,7 @@ function EventCard({ event, className = '' }) {
   const end = new Date(event.endAt || event.startAt)
   const multiDay = start.toDateString() !== end.toDateString()
   return (
-    <article className={`card overflow-hidden border border-amber-200 bg-gradient-to-br from-amber-50 via-yellow-50 to-yellow-100 shadow-sm transition hover:-translate-y-1 hover:shadow-lg ${className}`}>
+    <article className={`card overflow-hidden border border-amber-200 bg-gradient-to-br from-amber-50 via-yellow-50 to-yellow-100 shadow-sm transition hover:translate-x-1 hover:shadow-lg ${className}`}>
       <img className="h-40 w-full object-cover" src={event.image || eventImage} alt={`Imagen de ${event.title}`} />
       <div className="card-body gap-3 p-5">
         <div className="flex flex-wrap items-center justify-between gap-2">
