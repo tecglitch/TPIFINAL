@@ -77,6 +77,18 @@ function toApiEvent(event) {
   }
 }
 
+function toApiAnniversary(anniversary) {
+  return {
+    title: anniversary.title,
+    description: anniversary.description,
+    day: anniversary.day,
+    month: anniversary.month,
+    organization: anniversary.organization,
+    image: anniversary.image || null,
+    image_source: anniversary.imageSource || null,
+  }
+}
+
 function fromApiAnniversary(anniversary) {
   return {
     ...anniversary,
@@ -189,7 +201,7 @@ export function AppStateProvider({ children }) {
     },
     anniversaryList,
     submitAnniversary: async (proposal) => {
-      const saved = await createAnniversary(proposal, session?.token)
+      const saved = await createAnniversary(toApiAnniversary(proposal), session?.token)
       const mapped = fromApiAnniversary(saved)
       setAnniversaryList((current) => [mapped, ...current.filter((item) => item.id !== mapped.id)])
       return mapped

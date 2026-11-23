@@ -29,8 +29,8 @@ function AnniversaryDetailsPage() {
             <h1 className="mt-4 text-3xl font-black leading-tight md:text-5xl">{anniversary.title}</h1>
             <p className="mt-4 whitespace-pre-line text-lg leading-relaxed text-base-content/75">{anniversary.description}</p>
             <div className="mt-8 grid gap-4 border-t border-base-300 pt-6 sm:grid-cols-2">
-              <Detail label="Fecha" value={`${date} · se repite cada año`} />
-              {anniversary.organization && <Detail label="Organización que presenta" value={anniversary.organization} />}
+              <Detail label="Fecha" value={date} />
+              {anniversary.organization && <Detail label="Propuesta de" value={anniversary.organization} />}
               {anniversary.location && <Detail label="Lugar" value={anniversary.location} />}
               {anniversary.city && <Detail label="Ciudad" value={anniversary.city} />}
             </div>

@@ -83,9 +83,12 @@ function HomePage() {
             <div className="relative z-10">
               <div className="relative z-10 px-4">
                 <form onSubmit={search} className="card mx-auto -mt-8 max-w-4xl bg-base-100 p-4 shadow-lg md:p-5">
-                  <label className="input input-bordered flex items-center gap-2">
-                    <span aria-hidden="true">⌕</span><input className="grow" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Buscar eventos, lugares, categorías u organizaciones" />
-                  </label>
+                  <div className="mx-auto flex w-full max-w-2xl items-center gap-2">
+                    <label className="input input-bordered flex min-w-0 grow items-center gap-2">
+                      <span aria-hidden="true">⌕</span><input type="search" aria-label="Buscar eventos, lugares, categorías u organizaciones" className="grow" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Buscar eventos, lugares, categorías u organizaciones" />
+                    </label>
+                    <Button type="submit" className="shrink-0">Buscar</Button>
+                  </div>
                 </form>
               </div>
               <section className="mx-auto max-w-6xl px-6 py-12">

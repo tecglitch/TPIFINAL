@@ -1,4 +1,5 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom'
+import { useEffect } from 'react'
 import { AppStateProvider } from './AppState'
 import HomePage from './pages/HomePage'
 import CalendarPage from './pages/CalendarPage'
@@ -13,10 +14,21 @@ import AdminDashboardPage from './pages/AdminDashboardPage'
 import AnniversaryProposalPage from './pages/AnniversaryProposalPage'
 import AnniversaryDetailsPage from './pages/AnniversaryDetailsPage'
 
+function ScrollToTop() {
+  const { pathname } = useLocation()
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [pathname])
+
+  return null
+}
+
 function App() {
   return (
     <AppStateProvider>
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/calendario" element={<CalendarPage />} />
