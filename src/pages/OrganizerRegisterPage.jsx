@@ -6,6 +6,7 @@ import PageLayout from '../components/PageLayout'
 import SectionTitle from '../components/SectionTitle'
 import { registerAccount } from '../api'
 import { useAppState } from '../AppStateContext'
+import { saveRecentEmail } from '../utils/recentEmails'
 
 function OrganizerRegisterPage() {
   const [submitted, setSubmitted] = useState(false)
@@ -27,6 +28,7 @@ function OrganizerRegisterPage() {
         organization: organizations.find((organization) => organization.trim())?.trim() || '',
         password: form.get('password'),
       })
+      saveRecentEmail(form.get('email'))
       login(session)
       setSubmitted(true)
     } catch (requestError) {

@@ -12,8 +12,12 @@ const showDate = (value) => new Date(value).toLocaleString('es-AR', { dateStyle:
 
 function OrganizerDashboardPage() {
   const { role, organizerProfile, eventList, updateEvent, anniversaryList, deleteAnniversary } = useAppState()
-  const mine = eventList.filter((event) => event.organizer?.email === organizerProfile.email)
-  const mineAnniversaries = anniversaryList.filter((item) => item.organizer?.email === organizerProfile.email)
+  const mine = role === 'organizer' && organizerProfile?.email
+    ? eventList.filter((event) => event.organizer?.email === organizerProfile.email)
+    : []
+  const mineAnniversaries = role === 'organizer' && organizerProfile?.email
+    ? anniversaryList.filter((item) => item.organizer?.email === organizerProfile.email)
+    : []
   if (role !== 'organizer') return <PageLayout><section className="mx-auto max-w-3xl px-6 py-16"><Card className="p-8 text-center"><h1 className="text-2xl font-bold">Panel organizador restringido</h1><p className="mt-3">Necesitás una cuenta de organizador para acceder a esta sección.</p><Link to="/acceso"><Button className="mt-5">Ir al acceso</Button></Link></Card></section></PageLayout>
   return <PageLayout><section className="mx-auto max-w-6xl px-6 py-12 md:py-16"><SectionTitle eyebrow="Espacio de organización" title="Mis propuestas" action={<div className="flex flex-wrap gap-2"><Link to="/crear"><Button>Proponer evento</Button></Link><Link to="/efemerides/proponer"><Button variant="outline">Proponer efeméride</Button></Link></div>} />
     <p className="mb-6 rounded-box bg-info/10 p-4 text-sm">Seguí el estado de tus propuestas y revisá las novedades sobre cada una.</p>
@@ -73,6 +77,14 @@ function OrganizerEvent({ event, updateEvent }) {
         <StatusBadge status={event.status} />
       </div>
       {event.reviewNote && <p className="mt-4 rounded-box bg-base-200 p-3 text-sm"><strong>Detalle:</strong> {event.reviewNote}</p>}
+      {event.status === 'changes_requested' && (
+        <div className="mt-4 rounded-box bg-warning/15 p-4">
+          <p className="mb-3 text-sm font-semibold">Administración solicitó cambios en esta propuesta.</p>
+          <Link to={`/eventos/${event.slug}/editar`}>
+            <Button>Modificar evento</Button>
+          </Link>
+        </div>
+      )}
       {['published', 'rescheduled'].includes(event.status) && (
         <div className="mt-4 border-t border-base-300 pt-4">
           <div className="grid gap-3 md:grid-cols-2">

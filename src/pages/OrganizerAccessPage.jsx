@@ -6,12 +6,15 @@ import PageLayout from '../components/PageLayout'
 import SectionTitle from '../components/SectionTitle'
 import { login } from '../api'
 import { useAppState } from '../AppStateContext'
+import { readRecentEmails, saveRecentEmail } from '../utils/recentEmails'
 
 function OrganizerAccessPage() {
   const { login: saveSession } = useAppState()
   const navigate = useNavigate()
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [email, setEmail] = useState('')
+  const [recentEmails] = useState(readRecentEmails)
   async function handleSubmit(event) {
     event.preventDefault()
     setError('')
@@ -19,6 +22,7 @@ function OrganizerAccessPage() {
     const form = new FormData(event.currentTarget)
     try {
       const session = await login({ email: form.get('email'), password: form.get('password') })
+      saveRecentEmail(form.get('email'))
       saveSession(session)
       navigate(session.user.role === 'admin' ? '/administracion' : '/organizador')
     } catch (requestError) {
@@ -31,7 +35,32 @@ function OrganizerAccessPage() {
     <Card className="p-6 md:p-8"><p className="mb-5 text-base-content/75">Ingresá con tu cuenta. Al iniciar sesión, se mostrarán las opciones de acuerdo con tu rol.</p>
       {error && <p className="mb-4 rounded-box bg-error/15 p-3 text-sm text-error">{error}</p>}
       <form className="grid gap-4" onSubmit={handleSubmit}>
-        <label className="grid w-full gap-2"><span className="label-text font-semibold">Correo electrónico</span><input name="email" className="input input-bordered w-full" type="email" required /></label>
+        {recentEmails.length > 0 && (
+          <label className="grid w-full gap-2">
+            <span className="label-text font-semibold">Correos usados recientemente</span>
+            <select
+              className="select select-bordered w-full"
+              value=""
+              onChange={(event) => setEmail(event.target.value)}
+            >
+              <option value="">Elegí un correo</option>
+              {recentEmails.map((recentEmail) => (
+                <option key={recentEmail} value={recentEmail}>{recentEmail}</option>
+              ))}
+            </select>
+          </label>
+        )}
+        <label className="grid w-full gap-2">
+          <span className="label-text font-semibold">Correo electrónico</span>
+          <input
+            name="email"
+            className="input input-bordered w-full"
+            type="email"
+            required
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+          />
+        </label>
         <label className="grid w-full gap-2"><span className="label-text font-semibold">Contraseña</span><input name="password" className="input input-bordered w-full" type="password" required /></label>
         <Button type="submit" disabled={loading}>{loading ? 'Ingresando...' : 'Ingresar'}</Button>
       </form>

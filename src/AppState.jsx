@@ -11,6 +11,7 @@ import {
   getAnniversaries,
   getEvents,
   updateAnniversaryStatus,
+  updateEventDetails as updateEventDetailsRequest,
   updateEventStatus,
 } from './api'
 import { StateContext } from './AppStateContext'
@@ -180,6 +181,12 @@ export function AppStateProvider({ children }) {
       const saved = await createEvent(toApiEvent(proposal), session?.token)
       const mapped = fromApiEvent(saved)
       setEventList((current) => [mapped, ...current.filter((event) => event.slug !== mapped.slug)])
+      return mapped
+    },
+    updateEventDetails: async (slug, proposal) => {
+      const saved = await updateEventDetailsRequest(slug, toApiEvent(proposal), session?.token)
+      const mapped = fromApiEvent(saved)
+      setEventList((current) => current.map((event) => event.slug === slug ? mapped : event))
       return mapped
     },
     updateEvent: async (slug, updates) => {

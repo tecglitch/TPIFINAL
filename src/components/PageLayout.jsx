@@ -21,7 +21,10 @@ function PageLayout({ children }) {
     { to: '/efemerides/proponer', label: 'Proponer efeméride' },
     { to: '/organizador', label: 'Panel organizador' },
   )
-  if (role === 'admin') links.splice(2, 0, { to: '/administracion', label: 'Administración' })
+  if (role === 'admin') links.splice(2, 0,
+    { to: '/administracion', label: 'Administración' },
+    { to: '/administracion/consultas', label: 'Consultas' },
+  )
 
   return (
     <div className="min-h-screen bg-base-200">

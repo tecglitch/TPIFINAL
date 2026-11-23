@@ -11,6 +11,7 @@ import OrganizerAccessPage from './pages/OrganizerAccessPage'
 import OrganizerRegisterPage from './pages/OrganizerRegisterPage'
 import OrganizerDashboardPage from './pages/OrganizerDashboardPage'
 import AdminDashboardPage from './pages/AdminDashboardPage'
+import ContactMessagesPage from './pages/ContactMessagesPage'
 import AnniversaryProposalPage from './pages/AnniversaryProposalPage'
 import AnniversaryDetailsPage from './pages/AnniversaryDetailsPage'
 
@@ -33,6 +34,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/calendario" element={<CalendarPage />} />
           <Route path="/eventos/:slug" element={<EventDetailsPage />} />
+          <Route path="/eventos/:slug/editar" element={<CreateEventPage />} />
           <Route path="/crear" element={<CreateEventPage />} />
           <Route path="/contacto" element={<ContactPage />} />
           <Route path="/guardados" element={<FavoritesPage />} />
@@ -40,6 +42,7 @@ function App() {
           <Route path="/registro" element={<OrganizerRegisterPage />} />
           <Route path="/organizador" element={<OrganizerDashboardPage />} />
           <Route path="/administracion" element={<AdminDashboardPage />} />
+          <Route path="/administracion/consultas" element={<ContactMessagesPage />} />
           <Route path="/efemerides/proponer" element={<AnniversaryProposalPage />} />
           <Route path="/efemerides/:id" element={<AnniversaryDetailsPage />} />
           <Route path="*" element={<HomePage />} />

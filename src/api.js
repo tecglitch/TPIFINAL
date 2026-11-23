@@ -61,6 +61,12 @@ export function removeFavorite(slug, token) {
   })
 }
 
+export function getContactMessages(token) {
+  return request(`${EVENTS_API_URL}/contact`, {
+    headers: authHeaders(token),
+  })
+}
+
 export function sendContactMessage(data) {
   return request(`${EVENTS_API_URL}/contact`, {
     method: 'POST',
@@ -88,6 +94,14 @@ export function updateEventStatus(slug, data, token) {
     method: 'PATCH',
     headers: authHeaders(token),
     body: JSON.stringify(data),
+  })
+}
+
+export function updateEventDetails(slug, event, token) {
+  return request(`${EVENTS_API_URL}/events/${encodeURIComponent(slug)}`, {
+    method: 'PATCH',
+    headers: authHeaders(token),
+    body: JSON.stringify(event),
   })
 }
 

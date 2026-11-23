@@ -65,7 +65,10 @@ function HomePage() {
     { to: '/efemerides/proponer', label: 'Proponer efeméride' },
     { to: '/organizador', label: 'Panel organizador' },
   )
-  if (role === 'admin') links.push({ to: '/administracion', label: 'Administración' })
+  if (role === 'admin') links.push(
+    { to: '/administracion', label: 'Administración' },
+    { to: '/administracion/consultas', label: 'Consultas' },
+  )
 
   return (
     <div>
