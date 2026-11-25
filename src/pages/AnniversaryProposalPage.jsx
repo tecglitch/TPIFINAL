@@ -6,19 +6,7 @@ import PageLayout from '../components/PageLayout'
 import SectionTitle from '../components/SectionTitle'
 import { useAppState } from '../AppStateContext'
 import eventImage from '../images/playita.png'
-
-const MAX_IMAGE_BYTES = 5 * 1024 * 1024
-const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/avif']
-
-// Lee un archivo local y extrae su contenido base64 para enviarlo a la API.
-function fileToBase64(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    reader.onload = () => resolve(String(reader.result).split(',')[1])
-    reader.onerror = () => reject(new Error('No se pudo leer el archivo seleccionado.'))
-    reader.readAsDataURL(file)
-  })
-}
+import { ACCEPTED_IMAGE_TYPES, MAX_IMAGE_BYTES, fileToBase64 } from '../utils/imageFiles'
 
 // Formulario para que un organizador proponga una efeméride con imagen opcional.
 function AnniversaryProposalPage() {
@@ -27,19 +15,15 @@ function AnniversaryProposalPage() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [imageMode, setImageMode] = useState('url')
-  const [imageFile, setImageFile] = useState(null)
-  const [imagePreview, setImagePreview] = useState('')
+  const [selectedImage, setSelectedImage] = useState(null)
+  const imageFile = selectedImage?.file
+  const imagePreview = selectedImage?.previewUrl
   const [imageInputError, setImageInputError] = useState('')
 
   useEffect(() => {
-    if (!imageFile) {
-      setImagePreview('')
-      return undefined
-    }
-    const previewUrl = URL.createObjectURL(imageFile)
-    setImagePreview(previewUrl)
-    return () => URL.revokeObjectURL(previewUrl)
-  }, [imageFile])
+    if (!imagePreview) return undefined
+    return () => URL.revokeObjectURL(imagePreview)
+  }, [imagePreview])
 
   // Valida y envía el formulario; prepara la imagen como archivo o como URL.
   async function send(event) {
@@ -63,7 +47,7 @@ function AnniversaryProposalPage() {
   }
   if (role !== 'organizer') return <Navigate to="/acceso" replace />
   return <PageLayout><section className="mx-auto max-w-3xl px-6 py-12 md:py-16"><SectionTitle eyebrow="Memoria de Goya" title="Proponer una efeméride" />
-    {role !== 'organizer' ? <Card className="p-7"><p>Necesitás una cuenta de organizador para enviar una efeméride.</p><Link to="/acceso"><Button className="mt-5">Ir al acceso</Button></Link></Card> : submitted ? <Card className="p-8 text-center"><h2 className="text-2xl font-bold">Efeméride agregada a revisión</h2><p className="mt-3 text-base-content/70">Tu efeméride quedó pendiente de revisión. Podés consultar su estado desde «Panel organizador».</p><Link to="/organizador"><Button className="mt-5">Volver al panel</Button></Link></Card> : <Card className="p-6 md:p-8"><form className="grid gap-4" onSubmit={send}>
+    {submitted ? <Card className="p-8 text-center"><h2 className="text-2xl font-bold">Efeméride agregada a revisión</h2><p className="mt-3 text-base-content/70">Tu efeméride quedó pendiente de revisión. Podés consultar su estado desde «Panel organizador».</p><Link to="/organizador"><Button className="mt-5">Volver al panel</Button></Link></Card> : <Card className="p-6 md:p-8"><form className="grid gap-4" onSubmit={send}>
       <label className="flex w-full flex-col items-stretch gap-2"><span className="label-text font-semibold">Título *</span><input name="title" className="input input-bordered w-full" required /></label>
       <label className="flex w-full flex-col items-stretch gap-2"><span className="label-text font-semibold">Descripción *</span><textarea name="description" className="textarea textarea-bordered min-h-28 w-full" required /></label>
       <div className="grid gap-4 sm:grid-cols-2"><label className="flex w-full flex-col items-stretch gap-2"><span className="label-text font-semibold">Día recurrente *</span><input name="day" className="input input-bordered w-full" type="number" min="1" max="31" required /></label><label className="flex w-full flex-col items-stretch gap-2"><span className="label-text font-semibold">Mes *</span><select name="month" className="select select-bordered w-full" defaultValue="" required><option value="" disabled>Elegir mes</option>{['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'].map((month, index) => <option key={month} value={index + 1}>{month}</option>)}</select></label></div>
@@ -79,17 +63,17 @@ function AnniversaryProposalPage() {
           if (selected && !ACCEPTED_IMAGE_TYPES.includes(selected.type)) {
             setImageInputError('El formato no es compatible. Elegí una imagen JPG, PNG, WebP o AVIF.')
             change.target.value = ''
-            setImageFile(null)
+            setSelectedImage(null)
             return
           }
           if (selected && selected.size > MAX_IMAGE_BYTES) {
             setImageInputError('La imagen supera el límite de 5 MB. Elegí un archivo más liviano.')
             change.target.value = ''
-            setImageFile(null)
+            setSelectedImage(null)
             return
           }
           setImageInputError('')
-          setImageFile(selected)
+          setSelectedImage(selected ? { file: selected, previewUrl: URL.createObjectURL(selected) } : null)
         }} />{imageInputError && <span id="anniversary-image-error" role="alert" className="rounded-box bg-error/15 px-3 py-2 text-sm font-medium text-error">{imageInputError}</span>}{imageFile && <span className="text-sm text-base-content/70">{imageFile.name} · {(imageFile.size / 1024 / 1024).toFixed(2)} MB</span>}</label>}
         {imagePreview && <img src={imagePreview} alt="Vista previa de la imagen de la efeméride" className="h-40 w-full rounded-box object-cover sm:w-72" />}
         <p className="text-sm text-base-content/70">El servidor la optimizará a WebP de 1200 × 675 px.</p>

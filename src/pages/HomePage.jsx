@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import AnniversaryCarousel from '../components/AnniversaryCarousel'
 import Button from '../components/Button'
 import CategoryCard from '../components/CategoryCard'
-import CalendarButton from '../components/CalendarButton'
 import EventCard from '../components/EventCard'
 import Footer from '../components/Footer'
 import Hero from '../components/Hero'
@@ -50,7 +50,7 @@ function HomePage() {
     eventScrollRef.current?.scrollBy({ left: direction * eventScrollRef.current.clientWidth, behavior: 'smooth' })
   }
   const today = new Date()
-  const anniversary = anniversaryList.find((item) => item.status === 'published' && item.month === today.getMonth() + 1 && item.day === today.getDate())
+  const todayAnniversaries = anniversaryList.filter((item) => item.status === 'published' && item.month === today.getMonth() + 1 && item.day === today.getDate())
 
   // Lleva la búsqueda a la página del calendario mediante un parámetro de URL.
   function search(event) {
@@ -99,20 +99,12 @@ function HomePage() {
               </div>
               <section className="mx-auto max-w-6xl px-6 py-12">
                 <SectionTitle eyebrow="Memoria local" title="Un día como hoy…" className="wood-section-title" />
-                {anniversary ?
-                  <article className="relative z-30 grid h-[32rem] grid-rows-[13rem_1fr] overflow-hidden rounded-box bg-base-100 shadow-sm md:h-[19rem] md:grid-cols-[1fr_1.4fr] md:grid-rows-1">
-                    <img className="h-full w-full object-cover" src={anniversary.image} alt="" />
-                    <div className="flex min-h-0 flex-col p-5 md:p-8">
-                      <p className="text-sm font-bold text-primary">Efeméride · {today.toLocaleDateString('es-AR', { day: 'numeric', month: 'long' })}</p>
-                      <h3 className="mt-2 line-clamp-2 text-2xl font-black">{anniversary.title}</h3>
-                      <p className="anniversary-description mt-3 text-base-content/75">{anniversary.description}</p>
-                      <p className="mt-auto pt-2 text-sm">Propuesta de {anniversary.organization}</p>
-                      <div className="mt-3 flex flex-wrap gap-2">
-                        <Link className="btn btn-outline btn-sm" to={`/efemerides/${encodeURIComponent(anniversary.id)}`}>Ver más detalles</Link>
-                        <CalendarButton item={anniversary} className="btn-sm" />
-                      </div>
-                    </div>
-                  </article>
+                {todayAnniversaries.length ?
+                  <AnniversaryCarousel
+                    key={today.toDateString()}
+                    anniversaries={todayAnniversaries}
+                    dateLabel={today.toLocaleDateString('es-AR', { day: 'numeric', month: 'long' })}
+                  />
                 : <p className="rounded-box bg-base-100 p-5 text-base-content/70">Hoy no hay una efeméride publicada. Las organizaciones pueden iniciar sesión para proponer una.</p>}
               </section>
               <section id="eventos" className="mx-auto max-w-6xl px-6 pb-16">

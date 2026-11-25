@@ -6,8 +6,7 @@ import Button from '../components/Button'
 import Card from '../components/Card'
 import PageLayout from '../components/PageLayout'
 import SectionTitle from '../components/SectionTitle'
-
-const showDate = (value) => new Date(value).toLocaleString('es-AR', { dateStyle: 'medium', timeStyle: 'short' })
+import { getLocalDateTime } from '../data/events'
 
 // Prepara un enlace de Gmail con el destinatario, asunto y saludo del mensaje.
 function getGmailReplyUrl(item) {
@@ -83,7 +82,7 @@ function ContactMessagesPage() {
                   <div>
                     <h2 className="text-xl font-bold">{item.subject}</h2>
                     <p className="mt-1 text-sm">{item.name} · {item.email}</p>
-                    <p className="mt-1 text-xs text-base-content/60">{showDate(item.submitted_at)}</p>
+                    <p className="mt-1 text-xs text-base-content/60">{getLocalDateTime(item.submitted_at)}</p>
                   </div>
                   <a
                     className="btn btn-outline"

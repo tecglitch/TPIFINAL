@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { anniversaries as initialAnniversaries, events as initialEvents } from './data/events'
 import {
   createAnniversary,
@@ -111,6 +111,8 @@ function fromApiAnniversary(anniversary) {
 // Centraliza la sesión, los eventos, las efemérides y las acciones disponibles para las páginas.
 export function AppStateProvider({ children }) {
   const [session, setSession] = useState(readSession)
+  const [openDashboardPanels, setOpenDashboardPanels] = useState({})
+  const resetDashboardPanels = useCallback(() => setOpenDashboardPanels({}), [])
   const [favoriteSlugs, setFavoriteSlugs] = useState(readFavorites)
   const [eventList, setEventList] = useState(initialEvents)
   const [anniversaryList, setAnniversaryList] = useState(initialAnniversaries)
@@ -162,7 +164,17 @@ export function AppStateProvider({ children }) {
     role,
     organizerProfile,
     session,
-    login: setSession,
+    login: (newSession) => {
+      resetDashboardPanels()
+      setSession(newSession)
+    },
+    openDashboardPanels,
+    resetDashboardPanels,
+    setDashboardPanelOpen: (panelId, open) => {
+      setOpenDashboardPanels((current) => current[panelId] === open
+        ? current
+        : { ...current, [panelId]: open })
+    },
     // Limpia la sesión y vuelve a los favoritos locales al cerrar sesión.
     logout: () => {
       setSession(null)
@@ -245,7 +257,7 @@ export function AppStateProvider({ children }) {
       setAnniversaryList((current) => current.filter((item) => String(item.id) !== String(id)))
       return mapped
     },
-  }), [role, organizerProfile, session, favoriteSlugs, eventList, anniversaryList])
+  }), [role, organizerProfile, session, favoriteSlugs, eventList, anniversaryList, openDashboardPanels, resetDashboardPanels])
 
   return <StateContext.Provider value={value}>{children}</StateContext.Provider>
 }

@@ -1,18 +1,31 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Button from '../components/Button'
 import Card from '../components/Card'
+import { DashboardEventDetails } from '../components/DashboardDetails'
+import DashboardPanel from '../components/DashboardPanel'
 import PageLayout from '../components/PageLayout'
 import SectionTitle from '../components/SectionTitle'
-import StatusBadge from '../components/StatusBadge'
+import DashboardItem from '../components/DashboardItem'
 import { useAppState } from '../AppStateContext'
-import { statusLabels } from '../data/events'
-
-const showDate = (value) => new Date(value).toLocaleString('es-AR', { dateStyle: 'medium', timeStyle: 'short' })
+import { canEditEvent } from '../data/events'
 
 // Filtra las propuestas del usuario y muestra las acciones disponibles para su rol.
 function OrganizerDashboardPage() {
-  const { role, organizerProfile, eventList, updateEvent, anniversaryList, deleteAnniversary } = useAppState()
+  const { role, organizerProfile, eventList, updateEvent, anniversaryList, deleteAnniversary, resetDashboardPanels } = useAppState()
+  useEffect(() => {
+    if (role !== 'organizer') return undefined
+
+    function handleVisibilityChange() {
+      if (document.hidden) resetDashboardPanels()
+    }
+
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+      resetDashboardPanels()
+    }
+  }, [role, resetDashboardPanels])
   const mine = role === 'organizer' && organizerProfile?.email
     ? eventList.filter((event) => event.organizer?.email === organizerProfile.email)
     : []
@@ -32,54 +45,39 @@ function OrganizerDashboardPage() {
     <p className="mb-6 rounded-box bg-info/10 p-4 text-sm">Seguí el estado de tus propuestas y revisá las novedades sobre cada una.</p>
     <div className="grid gap-6">
       <div className="grid gap-2">
-        <OrganizerPanel title="Mis eventos en revisi&oacute;n" count={reviewEvents.length}>
-          {reviewEvents.length ? reviewEvents.map((event) => <OrganizerItem key={event.slug} title={event.title} status={event.status}><OrganizerEvent event={event} updateEvent={updateEvent} /></OrganizerItem>) : <EmptyOrganizerGroup>Todav&iacute;a no hay propuestas en revisi&oacute;n.</EmptyOrganizerGroup>}
-        </OrganizerPanel>
-        <OrganizerPanel title="Mis efem&eacute;rides en revisi&oacute;n" count={reviewAnniversaries.length}>
-          {reviewAnniversaries.length ? reviewAnniversaries.map((item) => <OrganizerItem key={item.id} title={item.title} status={item.status}><OrganizerAnniversary item={item} deleteAnniversary={deleteAnniversary} /></OrganizerItem>) : <EmptyOrganizerGroup>Todav&iacute;a no hay efem&eacute;rides en revisi&oacute;n.</EmptyOrganizerGroup>}
-        </OrganizerPanel>
+        <DashboardPanel panelId="organizer-review-events" title="Mis eventos en revisi&oacute;n" count={reviewEvents.length} highlightCount>
+          {reviewEvents.length ? reviewEvents.map((event) => <DashboardItem key={event.slug} title={event.title} status={event.status} image={event.image}><OrganizerEvent event={event} updateEvent={updateEvent} /></DashboardItem>) : <EmptyOrganizerGroup>Todav&iacute;a no hay propuestas en revisi&oacute;n.</EmptyOrganizerGroup>}
+        </DashboardPanel>
+        <DashboardPanel panelId="organizer-review-anniversaries" title="Mis efem&eacute;rides en revisi&oacute;n" count={reviewAnniversaries.length} highlightCount>
+          {reviewAnniversaries.length ? reviewAnniversaries.map((item) => <DashboardItem key={item.id} title={item.title} status={item.status} image={item.image}><OrganizerAnniversary item={item} deleteAnniversary={deleteAnniversary} /></DashboardItem>) : <EmptyOrganizerGroup>Todav&iacute;a no hay efem&eacute;rides en revisi&oacute;n.</EmptyOrganizerGroup>}
+        </DashboardPanel>
       </div>
       <div className="grid gap-2">
-        <OrganizerPanel title="Mis eventos publicados" count={publishedEvents.length}>
-          {publishedEvents.length ? publishedEvents.map((event) => <OrganizerItem key={event.slug} title={event.title} status={event.status}><OrganizerEvent event={event} updateEvent={updateEvent} /></OrganizerItem>) : <EmptyOrganizerGroup>Sin eventos publicados.</EmptyOrganizerGroup>}
-        </OrganizerPanel>
-        <OrganizerPanel title="Mis efem&eacute;rides publicadas" count={publishedAnniversaries.length}>
-          {publishedAnniversaries.length ? publishedAnniversaries.map((item) => <OrganizerItem key={item.id} title={item.title} status={item.status}><OrganizerAnniversary item={item} deleteAnniversary={deleteAnniversary} /></OrganizerItem>) : <EmptyOrganizerGroup>Sin efem&eacute;rides publicadas.</EmptyOrganizerGroup>}
-        </OrganizerPanel>
+        <DashboardPanel panelId="organizer-published-events" title="Mis eventos publicados" count={publishedEvents.length}>
+          {publishedEvents.length ? publishedEvents.map((event) => <DashboardItem key={event.slug} title={event.title} status={event.status} image={event.image}><OrganizerEvent event={event} updateEvent={updateEvent} /></DashboardItem>) : <EmptyOrganizerGroup>Sin eventos publicados.</EmptyOrganizerGroup>}
+        </DashboardPanel>
+        <DashboardPanel panelId="organizer-published-anniversaries" title="Mis efem&eacute;rides publicadas" count={publishedAnniversaries.length}>
+          {publishedAnniversaries.length ? publishedAnniversaries.map((item) => <DashboardItem key={item.id} title={item.title} status={item.status} image={item.image}><OrganizerAnniversary item={item} deleteAnniversary={deleteAnniversary} /></DashboardItem>) : <EmptyOrganizerGroup>Sin efem&eacute;rides publicadas.</EmptyOrganizerGroup>}
+        </DashboardPanel>
       </div>
       <div className="grid gap-2">
-        <OrganizerPanel title="Mis eventos cancelados" count={cancelledEvents.length}>
-          {cancelledEvents.length ? cancelledEvents.map((event) => <OrganizerItem key={event.slug} title={event.title} status={event.status}><OrganizerEvent event={event} updateEvent={updateEvent} /></OrganizerItem>) : <EmptyOrganizerGroup>No hay eventos cancelados.</EmptyOrganizerGroup>}
-        </OrganizerPanel>
-        <OrganizerPanel title="Mis efem&eacute;rides canceladas" count={cancelledAnniversaries.length}>
-          {cancelledAnniversaries.length ? cancelledAnniversaries.map((item) => <OrganizerItem key={item.id} title={item.title} status={item.status}><OrganizerAnniversary item={item} deleteAnniversary={deleteAnniversary} /></OrganizerItem>) : <EmptyOrganizerGroup>No hay efem&eacute;rides canceladas.</EmptyOrganizerGroup>}
-        </OrganizerPanel>
+        <DashboardPanel panelId="organizer-cancelled-events" title="Mis eventos cancelados" count={cancelledEvents.length}>
+          {cancelledEvents.length ? cancelledEvents.map((event) => <DashboardItem key={event.slug} title={event.title} status={event.status} image={event.image}><OrganizerEvent event={event} updateEvent={updateEvent} /></DashboardItem>) : <EmptyOrganizerGroup>No hay eventos cancelados.</EmptyOrganizerGroup>}
+        </DashboardPanel>
+        <DashboardPanel panelId="organizer-cancelled-anniversaries" title="Mis efem&eacute;rides canceladas" count={cancelledAnniversaries.length}>
+          {cancelledAnniversaries.length ? cancelledAnniversaries.map((item) => <DashboardItem key={item.id} title={item.title} status={item.status} image={item.image}><OrganizerAnniversary item={item} deleteAnniversary={deleteAnniversary} /></DashboardItem>) : <EmptyOrganizerGroup>No hay efem&eacute;rides canceladas.</EmptyOrganizerGroup>}
+        </DashboardPanel>
       </div>
       <div className="grid gap-2">
-        <OrganizerPanel title="Mis eventos rechazados" count={rejectedEvents.length}>
-          {rejectedEvents.length ? rejectedEvents.map((event) => <OrganizerItem key={event.slug} title={event.title} status={event.status}><OrganizerEvent event={event} updateEvent={updateEvent} /></OrganizerItem>) : <EmptyOrganizerGroup>No hay eventos rechazados.</EmptyOrganizerGroup>}
-        </OrganizerPanel>
-        <OrganizerPanel title="Mis efem&eacute;rides rechazadas" count={rejectedAnniversaries.length}>
-          {rejectedAnniversaries.length ? rejectedAnniversaries.map((item) => <OrganizerItem key={item.id} title={item.title} status={item.status}><OrganizerAnniversary item={item} deleteAnniversary={deleteAnniversary} /></OrganizerItem>) : <EmptyOrganizerGroup>No hay efem&eacute;rides rechazadas.</EmptyOrganizerGroup>}
-        </OrganizerPanel>
+        <DashboardPanel panelId="organizer-rejected-events" title="Mis eventos rechazados" count={rejectedEvents.length}>
+          {rejectedEvents.length ? rejectedEvents.map((event) => <DashboardItem key={event.slug} title={event.title} status={event.status} image={event.image}><OrganizerEvent event={event} updateEvent={updateEvent} /></DashboardItem>) : <EmptyOrganizerGroup>No hay eventos rechazados.</EmptyOrganizerGroup>}
+        </DashboardPanel>
+        <DashboardPanel panelId="organizer-rejected-anniversaries" title="Mis efem&eacute;rides rechazadas" count={rejectedAnniversaries.length}>
+          {rejectedAnniversaries.length ? rejectedAnniversaries.map((item) => <DashboardItem key={item.id} title={item.title} status={item.status} image={item.image}><OrganizerAnniversary item={item} deleteAnniversary={deleteAnniversary} /></DashboardItem>) : <EmptyOrganizerGroup>No hay efem&eacute;rides rechazadas.</EmptyOrganizerGroup>}
+        </DashboardPanel>
       </div>
     </div>
   </section></PageLayout>
-}
-
-function OrganizerPanel({ title, count, children }) {
-  const [isOpen, setIsOpen] = useState(true)
-  return <details className="rounded-box border border-base-300 bg-base-100" open={isOpen} onToggle={(event) => setIsOpen(event.currentTarget.open)}>
-    <summary className="cursor-pointer p-5 text-xl font-bold">{title}<span className="ml-2 text-sm font-normal text-base-content/60">({count})</span></summary>
-    <div className="grid gap-3 px-5 pb-5">{children}</div>
-  </details>
-}
-
-function OrganizerItem({ title, status, children }) {
-  return <details className="rounded-box border border-base-300 bg-base-100">
-    <summary className="min-h-16 cursor-pointer p-4 text-base font-semibold"><span className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4"><span className="min-w-0 break-words">{title}</span><StatusBadge status={status} /></span></summary>
-    <div className="border-t border-base-300 px-5 py-4">{children}</div>
-  </details>
 }
 
 function EmptyOrganizerGroup({ children }) {
@@ -127,22 +125,16 @@ function OrganizerEvent({ event, updateEvent }) {
   }
 
   return (
-    <Card className="p-5 md:p-6">
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div>
-          
-          <p className="mt-1 text-sm">Presenta: <strong>{event.organization}</strong> &middot; Perfil organizador: {event.organizer?.name}</p>
-          <p className="mt-1 text-sm text-base-content/70">{showDate(event.startAt)} &middot; {event.location}, {event.city}</p>
-        </div>
-      </div>
-      {event.reviewNote && <p className="mt-4 rounded-box bg-base-200 p-3 text-sm"><strong>Detalle:</strong> {event.reviewNote}</p>}
+    <DashboardEventDetails event={event}>
       {event.status === 'changes_requested' && (
         <div className="mt-4 rounded-box bg-warning/15 p-4">
-          <p className="mb-3 text-sm font-semibold">Administración solicitó cambios en esta propuesta.</p>
-          <Link to={`/eventos/${event.slug}/editar`}>
-            <Button>Modificar evento</Button>
-          </Link>
+          <p className="text-sm font-semibold">Administración solicitó cambios en esta propuesta.</p>
         </div>
+      )}
+      {canEditEvent(event) && (
+        <Link className="btn btn-primary mt-4" to={`/eventos/${event.slug}/editar`}>
+          Modificar evento
+        </Link>
       )}
       {['published', 'rescheduled'].includes(event.status) && (
         <div className="mt-4 border-t border-base-300 pt-4">
@@ -172,8 +164,7 @@ function OrganizerEvent({ event, updateEvent }) {
           <Button className="w-full self-end sm:w-44" variant="outline" onClick={() => reason.trim() && updateEvent(event.slug, { status: 'cancelled', reviewNote: reason.trim() })}>Cancelar evento</Button>
         </div>
       )}
-      <div className="mt-4 flex flex-wrap gap-2 text-xs">{Object.entries(statusLabels).map(([key, label]) => event.status === key ? <span className="badge badge-outline" key={key}>{label}</span> : null)}</div>
-    </Card>
+    </DashboardEventDetails>
   )
 }
 

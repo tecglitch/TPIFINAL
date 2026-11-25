@@ -5,20 +5,8 @@ import Card from '../components/Card'
 import PageLayout from '../components/PageLayout'
 import SectionTitle from '../components/SectionTitle'
 import { useAppState } from '../AppStateContext'
-import { categories } from '../data/events'
-
-const MAX_IMAGE_BYTES = 5 * 1024 * 1024
-const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/avif']
-
-// Lee la imagen seleccionada y devuelve su contenido base64.
-function fileToBase64(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    reader.onload = () => resolve(String(reader.result).split(',')[1])
-    reader.onerror = () => reject(new Error('No se pudo leer el archivo seleccionado.'))
-    reader.readAsDataURL(file)
-  })
-}
+import { canEditEvent, categories, isPublicEvent } from '../data/events'
+import { ACCEPTED_IMAGE_TYPES, MAX_IMAGE_BYTES, fileToBase64 } from '../utils/imageFiles'
 
 // Adapta una fecha ISO al valor que admite el campo datetime-local.
 function toDatetimeLocal(value) {
@@ -29,7 +17,7 @@ function toDatetimeLocal(value) {
   return new Date(date.getTime() - offset).toISOString().slice(0, 16)
 }
 
-// Sirve para crear una propuesta o editar una propuesta a la que pidieron cambios.
+// Permite crear o editar una propuesta para enviarla a revisión.
 function CreateEventPage() {
   const { slug } = useParams()
   const { role, organizerProfile, submitEvent, updateEventDetails, eventList } = useAppState()
@@ -79,7 +67,7 @@ function CreateEventPage() {
   }
   if (role !== 'organizer') return <Navigate to="/acceso" replace />
   if (editing && !editEvent) return <PageLayout><section className="mx-auto max-w-4xl px-6 py-12"><Card className="p-8 text-center">Cargando evento...</Card></section></PageLayout>
-  if (editing && editEvent.status !== 'changes_requested') return <Navigate to="/organizador" replace />
+  if (editing && (editEvent.organizer?.email !== organizerProfile?.email || !canEditEvent(editEvent))) return <Navigate to="/organizador" replace />
   const selectedTicketType = ticketTypeOverride || (editing ? editEvent?.ticketType : ticketType) || 'free'
   return <PageLayout><section className="mx-auto max-w-4xl px-6 py-12 md:py-16"><SectionTitle eyebrow={editing ? 'Modificá tu propuesta' : 'Participá de la agenda'} title={editing ? 'Modificar evento' : 'Proponer un evento'} />
     {submitted ? <Card className="items-center p-8 text-center md:p-12"><div className="mb-4 grid size-16 place-items-center rounded-full bg-success/15 text-3xl text-success">✓</div><h2 className="text-2xl font-bold">{editing ? 'Cambios enviados a revisión' : 'Propuesta enviada a revisión'}</h2><p className="mt-2 max-w-lg text-base-content/70">{editing ? 'Tu evento vuelve al estado pendiente para que administración revise los cambios.' : 'Tu propuesta está pendiente de aprobación. Podés consultar su estado en «Panel organizador».'}</p><div className="mt-6 flex flex-wrap justify-center gap-3"><Link to="/organizador"><Button>Ir al Panel organizador</Button></Link>{!editing && <Button variant="outline" onClick={() => setSubmitted(false)}>Crear otra propuesta</Button>}</div></Card> : <Card className="p-6 md:p-8"><form className="grid gap-5" onSubmit={handleSubmit}>
@@ -124,6 +112,7 @@ function CreateEventPage() {
         {selectedTicketType === 'paid' && <><label className="grid w-full gap-2"><span className="label-text font-semibold">Precio *</span><input name="price" className="input input-bordered w-full" defaultValue={editing ? editEvent.price || '' : ''} required placeholder="$ 5.000" /></label><label className="grid w-full gap-2 md:col-span-2"><span className="label-text font-semibold">Enlace de compra (opcional)</span><input name="ticketUrl" type="url" className="input input-bordered w-full" defaultValue={editing ? editEvent.ticketUrl || '' : ''} placeholder="https://" /></label></>}
       </fieldset>
       {error && <p className="rounded-box bg-error/15 p-4 text-sm text-error">{error}</p>}
+      {editing && isPublicEvent(editEvent) && <p className="rounded-box bg-warning/15 p-3 text-sm">Al enviar los cambios, el evento dejará de aparecer en la agenda pública hasta que administración vuelva a aprobarlo.</p>}
       <div className="flex flex-wrap justify-end gap-3"><Link to={editing ? '/organizador' : '/calendario'}><Button type="button" variant="ghost">Cancelar</Button></Link><Button type="submit" disabled={loading}>{loading ? 'Guardando...' : editing ? 'Enviar cambios a revisión' : 'Enviar a revisión'}</Button></div>
     </form></Card>}
   </section></PageLayout>

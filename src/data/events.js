@@ -19,6 +19,7 @@ export const statusLabels = {
 
 // Estos estados forman parte de la agenda pública; el resto corresponde a revisión interna.
 export const isPublicEvent = (event) => ['published', 'suspended', 'rescheduled', 'past'].includes(event.status)
+export const canEditEvent = (event) => ['pending', 'changes_requested', 'published', 'rescheduled'].includes(event.status)
 
 export const categories = [
   { icon: '🎭', name: 'Cultura', count: 12 },
@@ -55,5 +56,5 @@ export const anniversaries = [
 
 // Presenta una fecha y hora según la configuración regional argentina.
 export const getLocalDateTime = (value) => new Date(value).toLocaleString('es-AR', {
-  dateStyle: 'long', timeStyle: 'short',
+  dateStyle: 'medium', timeStyle: 'short',
 })
