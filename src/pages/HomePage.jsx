@@ -15,6 +15,7 @@ import { categories, isPublicEvent } from '../data/events'
 import heroImage from '../images/playita.png'
 import woodTexture from '../images/dark-wood-planks.png'
 
+// Portada: búsqueda, efeméride del día, carrusel de próximos eventos y categorías.
 function HomePage() {
   const [query, setQuery] = useState('')
   const eventScrollRef = useRef(null)
@@ -44,12 +45,14 @@ function HomePage() {
     }
   }, [upcoming.length])
 
+  // Desplaza el carrusel horizontal en una pantalla hacia la dirección indicada.
   function scrollEvents(direction) {
     eventScrollRef.current?.scrollBy({ left: direction * eventScrollRef.current.clientWidth, behavior: 'smooth' })
   }
   const today = new Date()
   const anniversary = anniversaryList.find((item) => item.status === 'published' && item.month === today.getMonth() + 1 && item.day === today.getDate())
 
+  // Lleva la búsqueda a la página del calendario mediante un parámetro de URL.
   function search(event) {
     event.preventDefault()
     navigate(`/calendario?q=${encodeURIComponent(query)}`)

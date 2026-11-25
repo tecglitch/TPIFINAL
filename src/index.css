@@ -2,6 +2,7 @@
 @import "./styles/theme.css";
 @plugin "daisyui";
 
+/* Tipografía manuscrita para títulos y elementos destacados. */
 .font-note-hand {
   font-family: "Patrick Hand", cursive;
 }
@@ -48,6 +49,7 @@ body {
   -webkit-line-clamp: 3;
 }
 
+/* Estructura y carrusel de la página de inicio. */
 .home-main {
   position: relative;
   isolation: isolate;
@@ -154,6 +156,7 @@ body {
   transform-origin: center top;
 }
 
+/* Decoración del marco de madera y hojas superpuestas. */
 .wood-surface::before {
   position: absolute;
   z-index: 1;
@@ -339,6 +342,7 @@ body {
   to { translate: 0 -6px; }
 }
 
+/* Ajustes de disposición para pantallas pequeñas y movimiento reducido. */
 @media (max-width: 640px) {
   .wood-surface {
     margin-inline: 1.2rem;

@@ -19,10 +19,12 @@ import { StateContext } from './AppStateContext'
 const FAVORITES_KEY = 'agenda-goya:favorites:v1'
 const SESSION_KEY = 'agenda-goya:session:v1'
 
+// Normaliza fechas al formato ISO que esperan las APIs.
 function toApiDateTime(value) {
   return value ? new Date(value).toISOString() : value
 }
 
+// Recupera favoritos locales y descarta datos inválidos o JSON corrupto.
 function readFavorites() {
   try {
     const saved = JSON.parse(localStorage.getItem(FAVORITES_KEY) || '[]')
@@ -32,6 +34,7 @@ function readFavorites() {
   }
 }
 
+// Recupera la sesión almacenada solo si contiene token y usuario.
 function readSession() {
   try {
     const saved = JSON.parse(localStorage.getItem(SESSION_KEY) || 'null')
@@ -41,6 +44,7 @@ function readSession() {
   }
 }
 
+// Adapta los nombres de campos de la API al formato usado por la interfaz.
 function fromApiEvent(event) {
   return {
     ...event,
@@ -59,6 +63,7 @@ function fromApiEvent(event) {
   }
 }
 
+// Convierte una propuesta del frontend al formato que recibe la API.
 function toApiEvent(event) {
   return {
     slug: event.slug,
@@ -78,6 +83,7 @@ function toApiEvent(event) {
   }
 }
 
+// Prepara una efeméride para enviarla al backend.
 function toApiAnniversary(anniversary) {
   return {
     title: anniversary.title,
@@ -90,6 +96,7 @@ function toApiAnniversary(anniversary) {
   }
 }
 
+// Adapta una efeméride de la API al formato usado por la interfaz.
 function fromApiAnniversary(anniversary) {
   return {
     ...anniversary,
@@ -101,6 +108,7 @@ function fromApiAnniversary(anniversary) {
   }
 }
 
+// Centraliza la sesión, los eventos, las efemérides y las acciones disponibles para las páginas.
 export function AppStateProvider({ children }) {
   const [session, setSession] = useState(readSession)
   const [favoriteSlugs, setFavoriteSlugs] = useState(readFavorites)
@@ -155,11 +163,13 @@ export function AppStateProvider({ children }) {
     organizerProfile,
     session,
     login: setSession,
+    // Limpia la sesión y vuelve a los favoritos locales al cerrar sesión.
     logout: () => {
       setSession(null)
       setFavoriteSlugs(readFavorites())
     },
     favoriteSlugs,
+    // Actualiza la interfaz primero y revierte el cambio si falla la petición al backend.
     toggleFavorite: async (slug) => {
       const isSaved = favoriteSlugs.includes(slug)
       setFavoriteSlugs((current) => isSaved
@@ -177,18 +187,21 @@ export function AppStateProvider({ children }) {
       }
     },
     eventList,
+    // Envía una propuesta nueva y sincroniza la lista local con la respuesta.
     submitEvent: async (proposal) => {
       const saved = await createEvent(toApiEvent(proposal), session?.token)
       const mapped = fromApiEvent(saved)
       setEventList((current) => [mapped, ...current.filter((event) => event.slug !== mapped.slug)])
       return mapped
     },
+    // Guarda correcciones solicitadas y reemplaza el evento actualizado en el estado.
     updateEventDetails: async (slug, proposal) => {
       const saved = await updateEventDetailsRequest(slug, toApiEvent(proposal), session?.token)
       const mapped = fromApiEvent(saved)
       setEventList((current) => current.map((event) => event.slug === slug ? mapped : event))
       return mapped
     },
+    // Actualiza estado o fechas del evento y refleja el resultado devuelto por la API.
     updateEvent: async (slug, updates) => {
       const saved = await updateEventStatus(slug, {
         status: updates.status,
@@ -200,6 +213,7 @@ export function AppStateProvider({ children }) {
       setEventList((current) => current.map((event) => event.slug === slug ? mapped : event))
       return mapped
     },
+    // Elimina el evento del estado local después de que el backend confirme la operación.
     deleteEvent: async (slug, reason) => {
       const saved = await deleteEventRequest(slug, reason, session?.token)
       const mapped = saved ? fromApiEvent(saved) : null
@@ -207,12 +221,14 @@ export function AppStateProvider({ children }) {
       return mapped
     },
     anniversaryList,
+    // Crea una efeméride y la agrega a la lista local.
     submitAnniversary: async (proposal) => {
       const saved = await createAnniversary(toApiAnniversary(proposal), session?.token)
       const mapped = fromApiAnniversary(saved)
       setAnniversaryList((current) => [mapped, ...current.filter((item) => item.id !== mapped.id)])
       return mapped
     },
+    // Actualiza el estado de moderación de una efeméride.
     updateAnniversary: async (id, updates) => {
       const saved = await updateAnniversaryStatus(id, {
         status: updates.status,
@@ -222,6 +238,7 @@ export function AppStateProvider({ children }) {
       setAnniversaryList((current) => current.map((item) => String(item.id) === String(id) ? mapped : item))
       return mapped
     },
+    // Elimina la efeméride del estado local tras completar la petición.
     deleteAnniversary: async (id, reason) => {
       const saved = await deleteAnniversaryRequest(id, reason, session?.token)
       const mapped = saved ? fromApiAnniversary(saved) : null

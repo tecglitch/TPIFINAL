@@ -4,6 +4,7 @@ import { upcomingAnniversaries } from './upcomingAnniversaries'
 const city = 'Goya, Corrientes'
 const organizerProfile = { name: 'Juan Pérez', email: 'juan@ejemplo.com', phone: '+54 3777 555 010' }
 
+// Traducciones de los estados que maneja el flujo de revisión de eventos.
 export const statusLabels = {
   deleted: 'Eliminado',
   pending: 'Pendiente de revisión',
@@ -27,6 +28,7 @@ export const categories = [
   { icon: '🤝', name: 'Comunidad', count: 9 },
 ]
 
+// Datos locales de respaldo mientras se cargan los registros del backend.
 export const events = [
   { slug: 'feria-de-artesanos', title: 'Feria de artesanos', description: 'Productos locales, música y propuestas para toda la familia.', category: 'Cultura', startAt: '2026-11-21T18:00', endAt: '2026-11-21T22:00', location: 'Paseo costero', city, organization: 'Feria Goya', organizer: organizerProfile, status: 'published', ticketType: 'free', submittedAt: '2026-10-20', image: eventImage },
   { slug: 'carnaval-de-la-ciudad', title: 'Carnaval de la ciudad', description: 'Comparsas, música en vivo y una noche para celebrar juntos.', category: 'Comunidad', startAt: '2027-02-22T21:00', endAt: '2027-02-23T01:00', location: 'Costanera municipal', city, organization: 'Municipalidad de Goya', organizer: { name: 'María Gómez', email: 'maria@ejemplo.com', phone: '+54 3777 555 012' }, status: 'published', ticketType: 'paid', price: '$ 5.000', ticketUrl: 'https://example.com/entradas', image: eventImage },
@@ -42,6 +44,7 @@ export const events = [
   { slug: 'feria-navidena', title: 'Feria navideña', description: 'Regalos, artesanías y propuestas especiales para las fiestas.', category: 'Gastronomía', startAt: '2026-12-14T17:00', endAt: '2026-12-14T22:00', location: 'Plaza Mitre', city, organization: 'Feria Goya', organizer: organizerProfile, status: 'published', ticketType: 'free', image: eventImage },
 ].map((event) => ({ ...event, slug: event.slug, id: event.slug }))
 
+// Efemérides de muestra más las fechas compartidas con el seed del backend.
 export const anniversaries = [
   { id: 'fundacion-goya', month: 11, day: 9, title: 'Aniversario de la fundación de Goya', description: 'Recordamos los orígenes de nuestra ciudad y a las generaciones que construyeron su identidad junto al Paraná.', organization: 'Archivo Histórico Municipal', image: eventImage, status: 'published', submittedAt: '2026-10-18' },
   { id: 'fiesta-del-surubi', month: 4, day: 24, title: 'La Fiesta Nacional del Surubí', description: 'Una celebración de la pesca deportiva, la cultura y el encuentro que identifica a Goya.', organization: 'Comisión Municipal de Pesca', image: eventImage, status: 'published', submittedAt: '2026-02-10' },
@@ -50,6 +53,7 @@ export const anniversaries = [
   ...upcomingAnniversaries.map((item) => ({ ...item, status: 'published', submittedAt: '2026-11-22' })),
 ]
 
+// Presenta una fecha y hora según la configuración regional argentina.
 export const getLocalDateTime = (value) => new Date(value).toLocaleString('es-AR', {
   dateStyle: 'long', timeStyle: 'short',
 })

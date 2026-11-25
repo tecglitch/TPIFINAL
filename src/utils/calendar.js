@@ -1,3 +1,4 @@
+// Escapa caracteres especiales para que el texto sea válido dentro de un archivo ICS.
 function escapeIcsText(value = '') {
   return String(value)
     .replace(/\\/g, '\\\\')
@@ -6,18 +7,22 @@ function escapeIcsText(value = '') {
     .replace(/\r?\n/g, '\\n')
 }
 
+// Convierte fecha y hora al formato UTC requerido por los calendarios.
 function formatIcsDate(value) {
   return new Date(value).toISOString().replace(/[-:]/g, '').replace(/\.\d{3}Z$/, 'Z')
 }
 
+// Usa el mismo formato de fecha para el enlace de Google Calendar.
 function formatGoogleDate(value) {
   return formatIcsDate(value)
 }
 
+// Formatea una fecha local como AAAAMMDD para eventos de día completo.
 function formatDateOnly(date) {
   return `${date.getFullYear()}${String(date.getMonth() + 1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}`
 }
 
+// Crea un nombre de archivo seguro a partir del slug o título.
 function filenameFor(item) {
   return (item.slug || item.title || 'evento')
     .toLocaleLowerCase('es-AR')
@@ -27,6 +32,7 @@ function filenameFor(item) {
     .replace(/^-|-$/g, '')
 }
 
+// Descarga un archivo .ics para importar el evento o efeméride en un calendario.
 export function downloadCalendarItem(item) {
   const isAnniversary = item.month && item.day && !item.startAt
   const now = new Date()
@@ -67,6 +73,7 @@ export function downloadCalendarItem(item) {
   window.setTimeout(() => URL.revokeObjectURL(url), 0)
 }
 
+// Construye el enlace de creación de evento en Google Calendar.
 export function getGoogleCalendarUrl(item) {
   const isAnniversary = item.month && item.day && !item.startAt
   const params = new URLSearchParams({

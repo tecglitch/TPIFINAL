@@ -9,6 +9,7 @@ import { useAppState } from '../AppStateContext'
 
 const showDate = (value) => new Date(value).toLocaleString('es-AR', { dateStyle: 'medium', timeStyle: 'short' })
 
+// Reúne propuestas para revisar y eventos aprobados, restringiendo la página a admin.
 function AdminDashboardPage() {
   const { role, eventList, updateEvent, deleteEvent, anniversaryList, updateAnniversary, deleteAnniversary } = useAppState()
   const ordered = useMemo(() => eventList
@@ -31,12 +32,14 @@ function AdminDashboardPage() {
   </section></PageLayout>
 }
 
+// Permite confirmar la baja lógica de un evento indicando un motivo.
 function AcceptedEvent({ event, deleteEvent }) {
   const [reason, setReason] = useState('')
   const [error, setError] = useState('')
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [loading, setLoading] = useState(false)
 
+  // Envía el motivo y mantiene el diálogo abierto si la petición falla.
   async function remove() {
     const trimmedReason = reason.trim()
     if (!trimmedReason) return
@@ -58,10 +61,12 @@ function AcceptedEvent({ event, deleteEvent }) {
   </Card>
 }
 
+// Diálogo compartido para confirmar una eliminación con motivo obligatorio.
 function DeleteModal({ title, itemTitle, reason, setReason, loading, onCancel, onConfirm }) {
   return <div className="modal modal-open" role="dialog" aria-modal="true" aria-labelledby="delete-modal-title"><div className="modal-box"><h3 id="delete-modal-title" className="text-xl font-bold">{title}</h3><p className="mt-2 text-sm text-base-content/70">Se eliminará: {itemTitle}</p><label className="mt-4 grid gap-2"><span className="label-text font-semibold">Motivo de eliminación *</span><textarea className="textarea textarea-bordered" rows="3" value={reason} onChange={(event) => setReason(event.target.value)} placeholder="Explicá por qué se elimina" autoFocus /></label><div className="modal-action"><Button variant="ghost" disabled={loading} onClick={onCancel}>Cancelar</Button><Button variant="neutral" disabled={!reason.trim() || loading} onClick={onConfirm}>{loading ? 'Eliminando...' : 'Confirmar eliminación'}</Button></div></div><div className="modal-backdrop" onClick={onCancel} /></div>
 }
 
+// Presenta una propuesta y las acciones para publicarla, pedir cambios o rechazarla.
 function ReviewEvent({ event, updateEvent }) {
   const [reason, setReason] = useState('')
   const reviewable = ['pending', 'changes_requested'].includes(event.status)
@@ -71,6 +76,7 @@ function ReviewEvent({ event, updateEvent }) {
   </Card>
 }
 
+// Modera una efeméride y permite dar de baja las que ya están publicadas.
 function ReviewAnniversary({ item, updateAnniversary, deleteAnniversary }) {
   const [reason, setReason] = useState('')
   const [deleteReason, setDeleteReason] = useState('')
@@ -79,6 +85,7 @@ function ReviewAnniversary({ item, updateAnniversary, deleteAnniversary }) {
   const [deleting, setDeleting] = useState(false)
   const reviewable = item.status === 'pending' || item.status === 'changes_requested'
 
+  // Elimina la efeméride después de confirmar el motivo requerido por el backend.
   async function remove() {
     const trimmedReason = deleteReason.trim()
     if (!trimmedReason) return

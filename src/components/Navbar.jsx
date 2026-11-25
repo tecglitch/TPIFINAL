@@ -2,7 +2,9 @@ import Button from './Button'
 import { Link } from 'react-router-dom'
 import goyaLetters from '../images/goya-sculptural-letters.png'
 
+// Barra de navegación adaptable con enlaces internos y externos.
 function Navbar({ brand, brandHref = '/', links = [], menuLabel = 'Abrir menú', action }) {
+  // Elige Link para rutas de la aplicación y ancla para direcciones externas.
   const renderLink = (link) => {
     const content = link.to
       ? <Link to={link.to}>{link.label}</Link>

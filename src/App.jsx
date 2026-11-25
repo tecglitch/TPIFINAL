@@ -15,6 +15,7 @@ import ContactMessagesPage from './pages/ContactMessagesPage'
 import AnniversaryProposalPage from './pages/AnniversaryProposalPage'
 import AnniversaryDetailsPage from './pages/AnniversaryDetailsPage'
 
+// Reinicia el scroll al cambiar de página.
 function ScrollToTop() {
   const { pathname } = useLocation()
 
@@ -25,6 +26,7 @@ function ScrollToTop() {
   return null
 }
 
+// Declara las páginas disponibles y comparte el estado global de la aplicación.
 function App() {
   return (
     <AppStateProvider>

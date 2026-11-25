@@ -7,6 +7,7 @@ import StatusBadge from './StatusBadge'
 
 const dateLabel = (value) => new Date(value).toLocaleDateString('es-AR', { day: 'numeric', month: 'long', year: 'numeric' })
 
+// Resume un evento y ofrece accesos a favoritos, calendario y detalle.
 function EventCard({ event, className = '' }) {
   const start = new Date(event.startAt)
   const end = new Date(event.endAt || event.startAt)

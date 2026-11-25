@@ -6,6 +6,7 @@ const tones = {
   cancelled: 'badge-error', past: 'badge-ghost',
 }
 
+// Traduce el estado de un registro a una etiqueta con color y texto legible.
 function StatusBadge({ status }) {
   if (!status) return null
   return <span className={`badge ${tones[status] || 'badge-ghost'}`}>{statusLabels[status] || status}</span>

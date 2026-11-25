@@ -13,16 +13,19 @@ const quickRanges = [
   { value: 'thisMonth', label: 'Este mes' },
 ]
 
+// Produce una clave de fecha local con formato AAAA-MM-DD.
 function dateKey(date) {
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
 }
 
+// Convierte una fecha ISO al formato visible DD/MM/AAAA.
 function formatDateForDisplay(value) {
   if (!value) return ''
   const [year, month, day] = value.split('-')
   return `${day}/${month}/${year}`
 }
 
+// Agrega separadores mientras el usuario escribe los dígitos de la fecha.
 function formatPartialDate(value) {
   const digits = value.replace(/\D/g, '').slice(0, 8)
   if (digits.length <= 2) return digits
@@ -30,6 +33,7 @@ function formatPartialDate(value) {
   return `${digits.slice(0, 2)}/${digits.slice(2, 4)}/${digits.slice(4)}`
 }
 
+// Valida una fecha DD/MM/AAAA y devuelve su formato ISO o una cadena vacía.
 function parseDisplayDate(value) {
   const match = value.match(/^(\d{2})\/(\d{2})\/(\d{4})$/)
   if (!match) return ''
@@ -42,6 +46,7 @@ function parseDisplayDate(value) {
   return `${yearText}-${monthText}-${dayText}`
 }
 
+// Genera los botones de acceso rápido para hoy y los próximos seis días.
 function upcomingDays() {
   const today = new Date()
   today.setHours(0, 0, 0, 0)
@@ -54,6 +59,7 @@ function upcomingDays() {
   })
 }
 
+// Presenta controles de búsqueda y filtros de texto, fecha y categoría.
 function EventFilters({ filters, onChange, onClear, categories, years }) {
   const datePickerRef = useRef(null)
   const [isOpen, setIsOpen] = useState(false)

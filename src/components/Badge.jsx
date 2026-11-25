@@ -1,3 +1,4 @@
+// Insignia reutilizable para resaltar una etiqueta breve.
 function Badge({ children, color = 'primary', className = '' }) {
   return (
     <span className={`badge badge-${color} ${className}`}>

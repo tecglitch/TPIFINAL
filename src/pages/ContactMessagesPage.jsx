@@ -9,6 +9,7 @@ import SectionTitle from '../components/SectionTitle'
 
 const showDate = (value) => new Date(value).toLocaleString('es-AR', { dateStyle: 'medium', timeStyle: 'short' })
 
+// Prepara un enlace de Gmail con el destinatario, asunto y saludo del mensaje.
 function getGmailReplyUrl(item) {
   const subject = `Re: ${item.subject}`
   const body = `Hola ${item.name},\n\n`
@@ -22,6 +23,7 @@ function getGmailReplyUrl(item) {
   return `https://mail.google.com/mail/?${params.toString()}`
 }
 
+// Carga y presenta las consultas recibidas; solo el rol admin puede verlas.
 function ContactMessagesPage() {
   const { role, session } = useAppState()
   const [messages, setMessages] = useState([])

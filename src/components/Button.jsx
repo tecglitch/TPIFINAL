@@ -1,3 +1,4 @@
+// Botón común que traduce una variante visual a las clases del tema.
 function Button({ children, variant = 'primary', className = '', ...props }) {
   const variants = {
     primary: 'btn-primary',

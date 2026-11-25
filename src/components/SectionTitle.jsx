@@ -1,3 +1,4 @@
+// Encabezado de sección con título, texto auxiliar y acción opcional.
 function SectionTitle({ eyebrow, title, action, className = '' }) {
   return (
     <div className={`mb-7 flex flex-wrap items-end justify-between gap-3 ${className}`}>

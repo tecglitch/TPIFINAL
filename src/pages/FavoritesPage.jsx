@@ -6,6 +6,7 @@ import SectionTitle from '../components/SectionTitle'
 import { useAppState } from '../AppStateContext'
 import { isPublicEvent } from '../data/events'
 
+// Muestra los eventos públicos guardados y permite limpiar favoritos no disponibles.
 function FavoritesPage() {
   const { eventList, favoriteSlugs, toggleFavorite } = useAppState()
   const saved = eventList.filter((event) => isPublicEvent(event) && favoriteSlugs.includes(event.slug))

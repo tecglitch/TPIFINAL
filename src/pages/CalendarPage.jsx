@@ -12,21 +12,25 @@ const emptyFilters = {
   month: '', year: '', date: '', dateText: '', quickRange: '', multiDayOnly: false,
 }
 
+// Normaliza una fecha al comienzo del día en la zona horaria local.
 function startOfLocalDay(date) {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate())
 }
 
+// Convierte una fecha seleccionada en los límites horarios de ese día.
 function dateInputRange(value) {
   const [year, month, day] = value.split('-').map(Number)
   return [new Date(year, month - 1, day), new Date(year, month - 1, day, 23, 59, 59, 999)]
 }
 
+// Comprueba si el intervalo del evento se cruza con el intervalo filtrado.
 function eventOverlapsRange(event, rangeStart, rangeEnd) {
   const eventStart = new Date(event.startAt)
   const eventEnd = new Date(event.endAt || event.startAt)
   return eventStart <= rangeEnd && eventEnd >= rangeStart
 }
 
+// Calcula los límites para los filtros de hoy, fin de semana, próximos días o mes.
 function quickRangeBounds(quickRange) {
   if (!quickRange) return null
   const today = startOfLocalDay(new Date())
@@ -55,6 +59,7 @@ function quickRangeBounds(quickRange) {
   return null
 }
 
+// Comprueba si las fechas del evento se superponen con el mes o año seleccionado.
 function matchesMonthYear(event, selectedMonth, selectedYear) {
   if (!selectedMonth && !selectedYear) return true
   const eventStart = new Date(event.startAt)
@@ -78,6 +83,7 @@ function matchesMonthYear(event, selectedMonth, selectedYear) {
   return false
 }
 
+// Filtra eventos visibles por texto, categoría, fecha, estado y duración.
 function CalendarPage() {
   const [params] = useSearchParams()
   const [filters, setFilters] = useState(() => ({

@@ -6,6 +6,7 @@ import SectionTitle from '../components/SectionTitle'
 import { sendContactMessage } from '../api'
 import { useAppState } from '../AppStateContext'
 
+// Formulario público para enviar una consulta de contacto al backend.
 function ContactPage() {
   const { session } = useAppState()
   const [submitted, setSubmitted] = useState(false)
@@ -13,6 +14,7 @@ function ContactPage() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
+  // Envía los datos y administra los estados de éxito, error y carga.
   async function handleSubmit(event) {
     event.preventDefault()
     const formElement = event.currentTarget

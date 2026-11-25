@@ -1,5 +1,6 @@
 import { downloadCalendarItem, getGoogleCalendarUrl } from '../utils/calendar'
 
+// Ofrece agregar el elemento a Google Calendar o descargarlo como archivo ICS.
 function CalendarButton({ item, className = '' }) {
   return <details className="dropdown dropdown-top dropdown-end">
     <summary className={`btn btn-outline ${className}`} aria-label={`Agregar ${item.title} al calendario`}>▦ Agregar al calendario</summary>

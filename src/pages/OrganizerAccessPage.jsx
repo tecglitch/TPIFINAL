@@ -8,6 +8,7 @@ import { login } from '../api'
 import { useAppState } from '../AppStateContext'
 import { readRecentEmails, saveRecentEmail } from '../utils/recentEmails'
 
+// Formulario de inicio de sesión para organizadores y administración.
 function OrganizerAccessPage() {
   const { login: saveSession } = useAppState()
   const navigate = useNavigate()
@@ -15,6 +16,7 @@ function OrganizerAccessPage() {
   const [loading, setLoading] = useState(false)
   const [email, setEmail] = useState('')
   const [recentEmails] = useState(readRecentEmails)
+  // Guarda la sesión recibida y redirige según el rol autenticado.
   async function handleSubmit(event) {
     event.preventDefault()
     setError('')

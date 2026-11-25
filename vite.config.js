@@ -3,7 +3,7 @@ import babel from '@rolldown/plugin-babel'
 import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'vite'
 
-// https://vite.dev/config/
+// Configura Vite con React, Tailwind y el preset del compilador de React.
 export default defineConfig({
   plugins: [
     react(),

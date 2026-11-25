@@ -1,3 +1,4 @@
+// Formulario visual reutilizable para una búsqueda con opciones.
 function SearchBar({ inputPlaceholder = '', options = [], submitLabel = '', onSubmit, className = '' }) {
   return (
     <form className={`card mx-auto -mt-8 max-w-4xl bg-base-100 p-4 shadow-lg md:p-5 ${className}`} onSubmit={onSubmit}>

@@ -8,12 +8,14 @@ import { registerAccount } from '../api'
 import { useAppState } from '../AppStateContext'
 import { saveRecentEmail } from '../utils/recentEmails'
 
+// Registro de una organización con posibilidad de asociar varios nombres.
 function OrganizerRegisterPage() {
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [organizations, setOrganizations] = useState([''])
   const { login } = useAppState()
+  // Registra la cuenta, inicia la sesión recibida y guarda el correo reciente.
   async function register(event) {
     event.preventDefault()
     const form = new FormData(event.currentTarget)

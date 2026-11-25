@@ -8,6 +8,7 @@ import StatusBadge from '../components/StatusBadge'
 import { useAppState } from '../AppStateContext'
 import { isPublicEvent } from '../data/events'
 
+// Formatea una fecha, una hora y el rango que aparece en la ficha del evento.
 const dateLabel = (value) => new Date(value).toLocaleDateString('es-AR', { day: 'numeric', month: 'long', year: 'numeric' })
 const timeLabel = (value) => new Date(value).toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' })
 const dateTimeRangeLabel = (startValue, endValue) => {
@@ -18,6 +19,7 @@ const dateTimeRangeLabel = (startValue, endValue) => {
   return `${dateRange} · ${timeLabel(startValue)}–${timeLabel(end)}`
 }
 
+// Muestra el detalle de un evento público o, si corresponde, visible para admin.
 function EventDetailsPage() {
   const { slug } = useParams()
   const { eventList, role } = useAppState()
@@ -64,6 +66,7 @@ function EventDetailsPage() {
   )
 }
 
+// Presenta un atributo de la ficha con su icono y etiqueta.
 function Detail({ label, value, icon }) {
   return <div className="flex items-start gap-3 rounded-box bg-base-200 p-4"><span aria-hidden="true" className="text-xl">{icon}</span><div><p className="text-xs font-bold uppercase tracking-wide text-base-content/60">{label}</p><p className="mt-1 font-semibold">{value}</p></div></div>
 }

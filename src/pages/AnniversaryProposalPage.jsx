@@ -10,6 +10,7 @@ import eventImage from '../images/playita.png'
 const MAX_IMAGE_BYTES = 5 * 1024 * 1024
 const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/avif']
 
+// Lee un archivo local y extrae su contenido base64 para enviarlo a la API.
 function fileToBase64(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
@@ -19,6 +20,7 @@ function fileToBase64(file) {
   })
 }
 
+// Formulario para que un organizador proponga una efeméride con imagen opcional.
 function AnniversaryProposalPage() {
   const { role, organizerProfile, submitAnniversary } = useAppState()
   const [submitted, setSubmitted] = useState(false)
@@ -39,6 +41,7 @@ function AnniversaryProposalPage() {
     return () => URL.revokeObjectURL(previewUrl)
   }, [imageFile])
 
+  // Valida y envía el formulario; prepara la imagen como archivo o como URL.
   async function send(event) {
     event.preventDefault()
     const form = new FormData(event.currentTarget)

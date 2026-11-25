@@ -1,6 +1,7 @@
 const AUTH_API_URL = import.meta.env.VITE_AUTH_API_URL || 'http://localhost:8000'
 const EVENTS_API_URL = import.meta.env.VITE_EVENTS_API_URL || 'http://localhost:3000'
 
+// Ejecuta una petición JSON común y convierte las respuestas no exitosas en errores.
 async function request(url, options = {}) {
   const response = await fetch(url, {
     ...options,
@@ -21,10 +22,12 @@ async function request(url, options = {}) {
   return body
 }
 
+// Añade el JWT al encabezado solo cuando hay una sesión activa.
 function authHeaders(token) {
   return token ? { Authorization: `Bearer ${token}` } : {}
 }
 
+// Funciones para autenticación, cuentas y favoritos (Django).
 export function login(credentials) {
   return request(`${AUTH_API_URL}/api/auth/login/`, {
     method: 'POST',
@@ -61,6 +64,7 @@ export function removeFavorite(slug, token) {
   })
 }
 
+// Funciones para mensajes, eventos y efemérides (Node API).
 export function getContactMessages(token) {
   return request(`${EVENTS_API_URL}/contact`, {
     headers: authHeaders(token),

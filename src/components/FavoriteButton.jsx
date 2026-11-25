@@ -1,5 +1,6 @@
 import { useAppState } from '../AppStateContext'
 
+// Muestra y alterna el estado guardado de un evento.
 function FavoriteButton({ slug, className = '' }) {
   const { favoriteSlugs, toggleFavorite } = useAppState()
   const saved = favoriteSlugs.includes(slug)

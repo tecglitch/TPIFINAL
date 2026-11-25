@@ -4,6 +4,7 @@ import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
+// Activa reglas de JavaScript y React para el código fuente, excluyendo dist.
 export default defineConfig([
   globalIgnores(['dist']),
   {

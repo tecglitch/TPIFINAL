@@ -10,6 +10,7 @@ import { categories } from '../data/events'
 const MAX_IMAGE_BYTES = 5 * 1024 * 1024
 const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/avif']
 
+// Lee la imagen seleccionada y devuelve su contenido base64.
 function fileToBase64(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
@@ -19,6 +20,7 @@ function fileToBase64(file) {
   })
 }
 
+// Adapta una fecha ISO al valor que admite el campo datetime-local.
 function toDatetimeLocal(value) {
   if (!value) return ''
   const date = new Date(value)
@@ -27,6 +29,7 @@ function toDatetimeLocal(value) {
   return new Date(date.getTime() - offset).toISOString().slice(0, 16)
 }
 
+// Sirve para crear una propuesta o editar una propuesta a la que pidieron cambios.
 function CreateEventPage() {
   const { slug } = useParams()
   const { role, organizerProfile, submitEvent, updateEventDetails, eventList } = useAppState()
@@ -49,6 +52,7 @@ function CreateEventPage() {
     return imagePreview ? () => URL.revokeObjectURL(imagePreview) : undefined
   }, [imagePreview])
 
+  // Valida el formulario, construye el slug y envía la imagen y datos del evento.
   async function handleSubmit(event) {
     event.preventDefault()
     const form = new FormData(event.currentTarget)

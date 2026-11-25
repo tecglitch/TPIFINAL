@@ -4,9 +4,11 @@ import Navbar from './Navbar'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAppState } from '../AppStateContext'
 
+// Estructura común de página y navegación según el rol de la sesión.
 function PageLayout({ children }) {
   const { role, session, logout } = useAppState()
   const navigate = useNavigate()
+  // Cierra la sesión y vuelve al inicio reemplazando la entrada de historial.
   const handleLogout = () => {
     logout()
     navigate('/', { replace: true })

@@ -1,3 +1,4 @@
+// Efemérides de referencia compartidas por la página y el seed del backend.
 export const upcomingAnniversaries = [
   {
     "id": "day-of-music-santa-cecilia",

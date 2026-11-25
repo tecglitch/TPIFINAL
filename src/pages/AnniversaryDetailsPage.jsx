@@ -4,6 +4,7 @@ import CalendarButton from '../components/CalendarButton'
 import PageLayout from '../components/PageLayout'
 import { useAppState } from '../AppStateContext'
 
+// Busca y muestra una efeméride publicada identificada por la ruta.
 function AnniversaryDetailsPage() {
   const { id } = useParams()
   const { anniversaryList } = useAppState()
@@ -42,6 +43,7 @@ function AnniversaryDetailsPage() {
   )
 }
 
+// Presenta un dato de la efeméride con una etiqueta descriptiva.
 function Detail({ label, value }) {
   return <div className="rounded-box bg-base-200 p-4"><p className="text-xs font-bold uppercase tracking-wide text-base-content/60">{label}</p><p className="mt-1 font-semibold">{value}</p></div>
 }

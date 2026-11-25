@@ -1,6 +1,7 @@
 const RECENT_EMAILS_KEY = 'agenda-goya:recent-emails:v1'
 const MAX_RECENT_EMAILS = 5
 
+// Lee los últimos correos guardados en el navegador.
 export function readRecentEmails() {
   try {
     const saved = JSON.parse(localStorage.getItem(RECENT_EMAILS_KEY) || '[]')
@@ -12,6 +13,7 @@ export function readRecentEmails() {
   }
 }
 
+// Normaliza el correo, lo coloca primero y conserva solo los cinco más recientes.
 export function saveRecentEmail(email) {
   const normalizedEmail = String(email || '').trim().toLowerCase()
   if (!normalizedEmail) return

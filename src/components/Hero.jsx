@@ -1,3 +1,4 @@
+// Encabezado destacado configurable con imagen, texto y acciones.
 function Hero({ backgroundImage, eyebrow, title, description, actions, children, className = '' }) {
   const backgroundStyle = backgroundImage
     ? {

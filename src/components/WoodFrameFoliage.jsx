@@ -1,6 +1,7 @@
 import horizontalVine from '../images/board-vine-horizontal.png'
 import verticalVine from '../images/board-vine-vertical.png'
 
+// Dibuja el marco de hojas usando las imágenes como fondos decorativos.
 function WoodFrameFoliage() {
   return (
     <div

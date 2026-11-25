@@ -10,6 +10,7 @@ import { statusLabels } from '../data/events'
 
 const showDate = (value) => new Date(value).toLocaleString('es-AR', { dateStyle: 'medium', timeStyle: 'short' })
 
+// Filtra las propuestas del usuario y muestra las acciones disponibles para su rol.
 function OrganizerDashboardPage() {
   const { role, organizerProfile, eventList, updateEvent, anniversaryList, deleteAnniversary } = useAppState()
   const mine = role === 'organizer' && organizerProfile?.email
@@ -28,6 +29,7 @@ function OrganizerDashboardPage() {
   </section></PageLayout>
 }
 
+// Muestra una propuesta propia y permite corregirla, reprogramarla o cancelarla.
 function OrganizerEvent({ event, updateEvent }) {
   const [startAt, setStartAt] = useState('')
   const [endAt, setEndAt] = useState('')
@@ -36,6 +38,7 @@ function OrganizerEvent({ event, updateEvent }) {
   const [rescheduleError, setRescheduleError] = useState('')
   const [rescheduleSuccess, setRescheduleSuccess] = useState(false)
 
+  // Valida el nuevo rango horario y solicita la reprogramación al backend.
   async function reschedule() {
     setRescheduleError('')
     setRescheduleSuccess(false)
@@ -118,8 +121,10 @@ function OrganizerEvent({ event, updateEvent }) {
   )
 }
 
+// Presenta una efeméride propia y permite retirar propuestas no publicadas.
 function OrganizerAnniversary({ item, deleteAnniversary }) {
   const [error, setError] = useState('')
+  // Pide confirmación antes de eliminar y muestra errores de la API.
   async function remove() {
     if (!window.confirm('¿Querés eliminar esta efeméride?')) return
     try {

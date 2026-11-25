@@ -8,6 +8,7 @@ const looseLeaves = [
   { position: 'board-open-space', src: oliveLeaf },
 ]
 
+// Coloca hojas decorativas alrededor de la portada sin interferir con los controles.
 function CornerFoliage() {
   return (
     <div className="foliage-scene pointer-events-none absolute inset-0" aria-hidden="true">
