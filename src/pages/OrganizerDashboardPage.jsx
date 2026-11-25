@@ -19,14 +19,71 @@ function OrganizerDashboardPage() {
   const mineAnniversaries = role === 'organizer' && organizerProfile?.email
     ? anniversaryList.filter((item) => item.organizer?.email === organizerProfile.email)
     : []
+  const publishedEvents = mine.filter((event) => ['published', 'rescheduled', 'suspended', 'past'].includes(event.status))
+  const cancelledEvents = mine.filter((event) => ['cancelled', 'deleted'].includes(event.status))
+  const reviewEvents = mine.filter((event) => ['pending', 'changes_requested'].includes(event.status))
+  const rejectedEvents = mine.filter((event) => event.status === 'rejected')
+  const publishedAnniversaries = mineAnniversaries.filter((item) => item.status === 'published')
+  const cancelledAnniversaries = mineAnniversaries.filter((item) => ['cancelled', 'deleted'].includes(item.status))
+  const reviewAnniversaries = mineAnniversaries.filter((item) => ['pending', 'changes_requested'].includes(item.status))
+  const rejectedAnniversaries = mineAnniversaries.filter((item) => item.status === 'rejected')
   if (role !== 'organizer') return <PageLayout><section className="mx-auto max-w-3xl px-6 py-16"><Card className="p-8 text-center"><h1 className="text-2xl font-bold">Panel organizador restringido</h1><p className="mt-3">Necesitás una cuenta de organizador para acceder a esta sección.</p><Link to="/acceso"><Button className="mt-5">Ir al acceso</Button></Link></Card></section></PageLayout>
   return <PageLayout><section className="mx-auto max-w-6xl px-6 py-12 md:py-16"><SectionTitle eyebrow="Espacio de organización" title="Mis propuestas" action={<div className="flex flex-wrap gap-2"><Link to="/crear"><Button>Proponer evento</Button></Link><Link to="/efemerides/proponer"><Button variant="outline">Proponer efeméride</Button></Link></div>} />
     <p className="mb-6 rounded-box bg-info/10 p-4 text-sm">Seguí el estado de tus propuestas y revisá las novedades sobre cada una.</p>
-    <h2 className="mb-4 text-2xl font-bold">Mis eventos</h2>
-    {mine.length ? <div className="grid gap-4">{mine.map((event) => <OrganizerEvent key={event.slug} event={event} updateEvent={updateEvent} />)}</div> : <Card className="p-8 text-center">Todavía no hay propuestas. <Link className="link link-primary" to="/crear">Crear una</Link></Card>}
-    <h2 className="mb-4 mt-12 text-2xl font-bold">Mis efemérides</h2>
-    {mineAnniversaries.length ? <div className="grid gap-4">{mineAnniversaries.map((item) => <OrganizerAnniversary key={item.id} item={item} deleteAnniversary={deleteAnniversary} />)}</div> : <Card className="p-8 text-center">Todavía no hay efemérides propuestas. <Link className="link link-primary" to="/efemerides/proponer">Proponer una</Link></Card>}
+    <div className="grid gap-6">
+      <div className="grid gap-2">
+        <OrganizerPanel title="Mis eventos en revisi&oacute;n" count={reviewEvents.length}>
+          {reviewEvents.length ? reviewEvents.map((event) => <OrganizerItem key={event.slug} title={event.title} status={event.status}><OrganizerEvent event={event} updateEvent={updateEvent} /></OrganizerItem>) : <EmptyOrganizerGroup>Todav&iacute;a no hay propuestas en revisi&oacute;n.</EmptyOrganizerGroup>}
+        </OrganizerPanel>
+        <OrganizerPanel title="Mis efem&eacute;rides en revisi&oacute;n" count={reviewAnniversaries.length}>
+          {reviewAnniversaries.length ? reviewAnniversaries.map((item) => <OrganizerItem key={item.id} title={item.title} status={item.status}><OrganizerAnniversary item={item} deleteAnniversary={deleteAnniversary} /></OrganizerItem>) : <EmptyOrganizerGroup>Todav&iacute;a no hay efem&eacute;rides en revisi&oacute;n.</EmptyOrganizerGroup>}
+        </OrganizerPanel>
+      </div>
+      <div className="grid gap-2">
+        <OrganizerPanel title="Mis eventos publicados" count={publishedEvents.length}>
+          {publishedEvents.length ? publishedEvents.map((event) => <OrganizerItem key={event.slug} title={event.title} status={event.status}><OrganizerEvent event={event} updateEvent={updateEvent} /></OrganizerItem>) : <EmptyOrganizerGroup>Sin eventos publicados.</EmptyOrganizerGroup>}
+        </OrganizerPanel>
+        <OrganizerPanel title="Mis efem&eacute;rides publicadas" count={publishedAnniversaries.length}>
+          {publishedAnniversaries.length ? publishedAnniversaries.map((item) => <OrganizerItem key={item.id} title={item.title} status={item.status}><OrganizerAnniversary item={item} deleteAnniversary={deleteAnniversary} /></OrganizerItem>) : <EmptyOrganizerGroup>Sin efem&eacute;rides publicadas.</EmptyOrganizerGroup>}
+        </OrganizerPanel>
+      </div>
+      <div className="grid gap-2">
+        <OrganizerPanel title="Mis eventos cancelados" count={cancelledEvents.length}>
+          {cancelledEvents.length ? cancelledEvents.map((event) => <OrganizerItem key={event.slug} title={event.title} status={event.status}><OrganizerEvent event={event} updateEvent={updateEvent} /></OrganizerItem>) : <EmptyOrganizerGroup>No hay eventos cancelados.</EmptyOrganizerGroup>}
+        </OrganizerPanel>
+        <OrganizerPanel title="Mis efem&eacute;rides canceladas" count={cancelledAnniversaries.length}>
+          {cancelledAnniversaries.length ? cancelledAnniversaries.map((item) => <OrganizerItem key={item.id} title={item.title} status={item.status}><OrganizerAnniversary item={item} deleteAnniversary={deleteAnniversary} /></OrganizerItem>) : <EmptyOrganizerGroup>No hay efem&eacute;rides canceladas.</EmptyOrganizerGroup>}
+        </OrganizerPanel>
+      </div>
+      <div className="grid gap-2">
+        <OrganizerPanel title="Mis eventos rechazados" count={rejectedEvents.length}>
+          {rejectedEvents.length ? rejectedEvents.map((event) => <OrganizerItem key={event.slug} title={event.title} status={event.status}><OrganizerEvent event={event} updateEvent={updateEvent} /></OrganizerItem>) : <EmptyOrganizerGroup>No hay eventos rechazados.</EmptyOrganizerGroup>}
+        </OrganizerPanel>
+        <OrganizerPanel title="Mis efem&eacute;rides rechazadas" count={rejectedAnniversaries.length}>
+          {rejectedAnniversaries.length ? rejectedAnniversaries.map((item) => <OrganizerItem key={item.id} title={item.title} status={item.status}><OrganizerAnniversary item={item} deleteAnniversary={deleteAnniversary} /></OrganizerItem>) : <EmptyOrganizerGroup>No hay efem&eacute;rides rechazadas.</EmptyOrganizerGroup>}
+        </OrganizerPanel>
+      </div>
+    </div>
   </section></PageLayout>
+}
+
+function OrganizerPanel({ title, count, children }) {
+  const [isOpen, setIsOpen] = useState(true)
+  return <details className="rounded-box border border-base-300 bg-base-100" open={isOpen} onToggle={(event) => setIsOpen(event.currentTarget.open)}>
+    <summary className="cursor-pointer p-5 text-xl font-bold">{title}<span className="ml-2 text-sm font-normal text-base-content/60">({count})</span></summary>
+    <div className="grid gap-3 px-5 pb-5">{children}</div>
+  </details>
+}
+
+function OrganizerItem({ title, status, children }) {
+  return <details className="rounded-box border border-base-300 bg-base-100">
+    <summary className="min-h-16 cursor-pointer p-4 text-base font-semibold"><span className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4"><span className="min-w-0 break-words">{title}</span><StatusBadge status={status} /></span></summary>
+    <div className="border-t border-base-300 px-5 py-4">{children}</div>
+  </details>
+}
+
+function EmptyOrganizerGroup({ children }) {
+  return <p className="py-3 text-sm text-base-content/70">{children}</p>
 }
 
 // Muestra una propuesta propia y permite corregirla, reprogramarla o cancelarla.
@@ -73,11 +130,10 @@ function OrganizerEvent({ event, updateEvent }) {
     <Card className="p-5 md:p-6">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h2 className="text-xl font-bold">{event.title}</h2>
+          
           <p className="mt-1 text-sm">Presenta: <strong>{event.organization}</strong> &middot; Perfil organizador: {event.organizer?.name}</p>
           <p className="mt-1 text-sm text-base-content/70">{showDate(event.startAt)} &middot; {event.location}, {event.city}</p>
         </div>
-        <StatusBadge status={event.status} />
       </div>
       {event.reviewNote && <p className="mt-4 rounded-box bg-base-200 p-3 text-sm"><strong>Detalle:</strong> {event.reviewNote}</p>}
       {event.status === 'changes_requested' && (
@@ -133,7 +189,7 @@ function OrganizerAnniversary({ item, deleteAnniversary }) {
       setError(requestError.message)
     }
   }
-  return <Card className="p-5 md:p-6"><div className="flex flex-wrap items-start justify-between gap-3"><div><h2 className="text-xl font-bold">{item.title}</h2><p className="mt-1 text-sm">{item.day}/{item.month} · Presenta: <strong>{item.organization}</strong></p><p className="mt-1 text-sm text-base-content/70">{item.description}</p></div><StatusBadge status={item.status} /></div>
+  return <Card className="p-5 md:p-6"><div className="flex flex-wrap items-start justify-between gap-3"><div><p className="mt-1 text-sm">{item.day}/{item.month} · Presenta: <strong>{item.organization}</strong></p><p className="mt-1 text-sm text-base-content/70">{item.description}</p></div></div>
     {item.reviewNote && <p className="mt-4 rounded-box bg-base-200 p-3 text-sm"><strong>Detalle:</strong> {item.reviewNote}</p>}
     {['pending', 'changes_requested', 'rejected'].includes(item.status) && <Button className="mt-4" variant="outline" onClick={remove}>Eliminar propuesta</Button>}
     {error && <p className="mt-3 text-sm text-error">{error}</p>}
