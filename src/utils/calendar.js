@@ -32,6 +32,29 @@ function filenameFor(item) {
     .replace(/^-|-$/g, '')
 }
 
+function calendarDetails(item) {
+  const statusUrl = item.slug && typeof window !== 'undefined'
+    ? new URL(`/eventos/${encodeURIComponent(item.slug)}/estado`, window.location.origin).href
+    : ''
+  return [item.description, statusUrl && `Consultar estado actualizado: ${statusUrl}`].filter(Boolean).join('\n\n')
+}
+
+function foldIcsLine(line) {
+  const encoder = new TextEncoder()
+  let width = 0
+  let folded = ''
+  for (const char of line) {
+    const bytes = encoder.encode(char).length
+    if (width + bytes > 75) {
+      folded += '\r\n '
+      width = 1
+    }
+    folded += char
+    width += bytes
+  }
+  return folded
+}
+
 // Descarga un archivo .ics para importar el evento o efeméride en un calendario.
 export function downloadCalendarItem(item) {
   const isAnniversary = item.month && item.day && !item.startAt
@@ -45,7 +68,7 @@ export function downloadCalendarItem(item) {
     `UID:${escapeIcsText(`${item.slug || item.id}@agendaciudad.com`)}`,
     `DTSTAMP:${formatIcsDate(now)}`,
     `SUMMARY:${escapeIcsText(item.title)}`,
-    `DESCRIPTION:${escapeIcsText(item.description)}`,
+    `DESCRIPTION:${escapeIcsText(calendarDetails(item))}`,
     `LOCATION:${escapeIcsText([item.location, item.city].filter(Boolean).join(', '))}`,
   ]
 
@@ -62,7 +85,7 @@ export function downloadCalendarItem(item) {
   }
 
   lines.push('END:VEVENT', 'END:VCALENDAR')
-  const blob = new Blob([`${lines.join('\r\n')}\r\n`], { type: 'text/calendar;charset=utf-8' })
+  const blob = new Blob([`${lines.map(foldIcsLine).join('\r\n')}\r\n`], { type: 'text/calendar;charset=utf-8' })
   const url = URL.createObjectURL(blob)
   const link = document.createElement('a')
   link.href = url
@@ -79,7 +102,7 @@ export function getGoogleCalendarUrl(item) {
   const params = new URLSearchParams({
     action: 'TEMPLATE',
     text: item.title,
-    details: item.description || '',
+    details: calendarDetails(item),
     location: [item.location, item.city].filter(Boolean).join(', '),
   })
 

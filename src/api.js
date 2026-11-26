@@ -2,7 +2,7 @@ const AUTH_API_URL = import.meta.env.VITE_AUTH_API_URL || 'http://localhost:8000
 const EVENTS_API_URL = import.meta.env.VITE_EVENTS_API_URL || 'http://localhost:3000'
 
 // Ejecuta una petición JSON común y convierte las respuestas no exitosas en errores.
-async function request(url, options = {}) {
+async function request(url, options = {}, fallbackMessage = 'No se pudo completar la operación') {
   const response = await fetch(url, {
     ...options,
     headers: {
@@ -15,7 +15,7 @@ async function request(url, options = {}) {
 
   const body = await response.json().catch(() => null)
   if (!response.ok) {
-    const error = new Error(body?.message || body?.detail || 'No se pudo completar la operación')
+    const error = new Error(body?.message || body?.detail || fallbackMessage)
     error.status = response.status
     throw error
   }
@@ -25,6 +25,17 @@ async function request(url, options = {}) {
 // Añade el JWT al encabezado solo cuando hay una sesión activa.
 function authHeaders(token) {
   return token ? { Authorization: `Bearer ${token}` } : {}
+}
+
+export function getPublicEventStatus(slug, signal) {
+  return request(`${EVENTS_API_URL}/event-alerts/events/${encodeURIComponent(slug)}`, { signal })
+}
+
+export function subscribeToEventAlerts(slug, email) {
+  return request(`${EVENTS_API_URL}/event-alerts/events/${encodeURIComponent(slug)}`, {
+    method: 'POST',
+    body: JSON.stringify({ email }),
+  }, 'El servicio de avisos no está disponible. Podés agregar el evento sin avisos.')
 }
 
 // Funciones para autenticación, cuentas y favoritos (Django).

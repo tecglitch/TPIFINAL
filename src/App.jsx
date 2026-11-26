@@ -4,6 +4,7 @@ import { AppStateProvider } from './AppState'
 import HomePage from './pages/HomePage'
 import CalendarPage from './pages/CalendarPage'
 import EventDetailsPage from './pages/EventDetailsPage'
+import EventStatusPage from './pages/EventStatusPage'
 import CreateEventPage from './pages/CreateEventPage'
 import ContactPage from './pages/ContactPage'
 import FavoritesPage from './pages/FavoritesPage'
@@ -36,6 +37,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/calendario" element={<CalendarPage />} />
           <Route path="/eventos/:slug" element={<EventDetailsPage />} />
+          <Route path="/eventos/:slug/estado" element={<EventStatusPage />} />
           <Route path="/eventos/:slug/editar" element={<CreateEventPage />} />
           <Route path="/crear" element={<CreateEventPage />} />
           <Route path="/contacto" element={<ContactPage />} />
