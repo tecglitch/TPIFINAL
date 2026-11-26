@@ -187,7 +187,7 @@ export function AppStateProvider({ children }) {
       setFavoriteSlugs((current) => isSaved
         ? current.filter((item) => item !== slug)
         : [...current, slug])
-      if (!session?.token) return
+      if (!session?.token) return true
       try {
         if (isSaved) await removeFavoriteRequest(slug, session.token)
         else await addFavoriteRequest(slug, session.token)
@@ -196,7 +196,9 @@ export function AppStateProvider({ children }) {
           ? [...current, slug]
           : current.filter((item) => item !== slug))
         if (error.status === 401) setSession(null)
+        return false
       }
+      return true
     },
     eventList,
     // Envía una propuesta nueva y sincroniza la lista local con la respuesta.

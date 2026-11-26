@@ -35,7 +35,7 @@ export function subscribeToEventAlerts(slug, email) {
   return request(`${EVENTS_API_URL}/event-alerts/events/${encodeURIComponent(slug)}`, {
     method: 'POST',
     body: JSON.stringify({ email }),
-  }, 'El servicio de avisos no está disponible. Podés agregar el evento sin avisos.')
+  }, 'El servicio de avisos no está disponible por el momento.')
 }
 
 // Funciones para autenticación, cuentas y favoritos (Django).

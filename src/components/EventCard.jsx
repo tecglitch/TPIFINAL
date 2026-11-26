@@ -29,7 +29,7 @@ function EventCard({ event, className = '' }) {
         </dl>
         {event.status === 'rescheduled' && event.previousStartAt && <p className="text-sm text-info">Nueva fecha: {dateLabel(event.startAt)} · Antes: {dateLabel(event.previousStartAt)}</p>}
         <div className="card-actions mt-1 items-center justify-between gap-2">
-          <div className="flex flex-wrap gap-2"><FavoriteButton slug={event.slug} /><CalendarButton item={event} className="btn-sm" /></div>
+          <div className="flex flex-wrap gap-2"><FavoriteButton event={event} /><CalendarButton item={event} className="btn-sm" /></div>
           <Link to={`/eventos/${event.slug}`}><Button variant="ghost" className="text-primary">Ver detalles</Button></Link>
         </div>
       </div>

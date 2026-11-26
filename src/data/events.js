@@ -20,6 +20,9 @@ export const statusLabels = {
 // Estos estados forman parte de la agenda pública; el resto corresponde a revisión interna.
 export const isPublicEvent = (event) => ['published', 'suspended', 'rescheduled', 'past'].includes(event.status)
 export const canEditEvent = (event) => ['pending', 'changes_requested', 'published', 'rescheduled'].includes(event.status)
+export const canSubscribeToEventAlerts = (event) => Boolean(event.slug)
+  && ['published', 'rescheduled'].includes(event.status)
+  && new Date(event.endAt || event.startAt) >= new Date()
 
 export const categories = [
   { icon: '🎭', name: 'Cultura', count: 12 },
